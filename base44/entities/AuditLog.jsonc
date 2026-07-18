@@ -1,0 +1,25 @@
+{
+  "name": "AuditLog",
+  "type": "object",
+  "properties": {
+    "user_name": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string"
+    },
+    "entity_id": {
+      "type": "string"
+    },
+    "request_number": {
+      "type": "string"
+    },
+    "details": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_name",
+    "action"
+  ]
+}

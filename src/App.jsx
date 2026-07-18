@@ -15,6 +15,9 @@ import Dashboard from '@/pages/Dashboard';
 import NewRequest from '@/pages/NewRequest';
 import Requests from '@/pages/Requests';
 import RequestDetail from '@/pages/RequestDetail';
+import Audit from '@/pages/Audit';
+import Reports from '@/pages/Reports';
+import { RoleProvider } from '@/lib/RoleContext';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -41,19 +44,23 @@ const AuthenticatedApp = () => {
 
   // Render the main app
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-      <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/nova-solicitacao" element={<NewRequest />} />
-        <Route path="/solicitacoes" element={<Requests />} />
-        <Route path="/solicitacoes/:id" element={<RequestDetail />} />
-      </Route>
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+    <RoleProvider>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/nova-solicitacao" element={<NewRequest />} />
+          <Route path="/solicitacoes" element={<Requests />} />
+          <Route path="/solicitacoes/:id" element={<RequestDetail />} />
+          <Route path="/auditoria" element={<Audit />} />
+          <Route path="/relatorios" element={<Reports />} />
+        </Route>
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </RoleProvider>
   );
 };
 

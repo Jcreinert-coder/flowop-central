@@ -1,3 +1,51 @@
-import { CalendarDays,Clock3,Gauge,TrendingDown,TrendingUp } from 'lucide-react';
-const metrics=[['Tempo médio para criar OP','18 min',Clock3,'text-cyan-300'],['Maior tempo','42 min',TrendingUp,'text-rose-300'],['Menor tempo','6 min',TrendingDown,'text-emerald-300'],['Dentro do prazo','94%',Gauge,'text-violet-300']];
-export default function RightPanel(){return <aside className="space-y-4"><section className="glass p-5"><h2 className="section-title">Últimas Solicitações</h2>{['SOL-0248 · Blend Premium','SOL-0247 · Base Neutra','SOL-0246 · Composto X12'].map((x,i)=><div key={x} className="flex items-center gap-3 border-b border-white/5 py-3 last:border-0"><span className={`h-2 w-2 rounded-full ${i===0?'bg-amber-400':i===1?'bg-sky-400':'bg-emerald-400'}`}/><div><p className="text-xs text-slate-300">{x}</p><small className="text-[10px] text-slate-600">há {i*12+4} minutos</small></div></div>)}</section><section id="calendario" className="glass p-5"><div className="flex items-center justify-between"><h2 className="section-title">Julho 2026</h2><CalendarDays size={17} className="text-violet-300"/></div><div className="mt-4 grid grid-cols-7 gap-1 text-center text-[10px] text-slate-600">{'DSTQQSS'.split('').map((d,i)=><b key={i}>{d}</b>)}{Array.from({length:31},(_,i)=><span key={i} className={`grid aspect-square place-items-center rounded-lg ${i===17?'bg-violet-600 text-white':i>14&&i<21?'text-slate-300':'text-slate-500'}`}>{i+1}</span>)}</div></section><section id="indicadores" className="glass p-5"><h2 className="section-title">Indicadores</h2><div className="mt-3 grid grid-cols-2 gap-2">{metrics.map(([l,v,I,c])=><div key={l} className="rounded-xl bg-white/[.035] p-3"><I size={15} className={c}/><strong className="mt-3 block text-sm text-white">{v}</strong><small className="text-[10px] text-slate-500">{l}</small></div>)}</div></section></aside>}
+import { CalendarDays, Clock3, Gauge, TrendingDown, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+const metrics = [['Tempo médio para criar OP', '18 min', Clock3, 'text-cyan-300'], ['Maior tempo', '42 min', TrendingUp, 'text-rose-300'], ['Menor tempo', '6 min', TrendingDown, 'text-emerald-300'], ['Dentro do prazo', '94%', Gauge, 'text-violet-300']];
+
+export default function RightPanel({ rows }) {
+  const latest = [...rows].slice(0, 3);
+  return (
+    <aside className="space-y-4">
+      <section className="glass p-5">
+        <h2 className="section-title">Últimas Solicitações</h2>
+        {latest.map((x, i) => (
+          <Link key={x.id} to={`/solicitacoes/${x.id}`} className="flex items-center gap-3 border-b border-white/5 py-3 last:border-0 hover:text-violet-300">
+            <span className={`h-2 w-2 rounded-full ${i === 0 ? 'bg-amber-400' : i === 1 ? 'bg-sky-400' : 'bg-emerald-400'}`} />
+            <div>
+              <p className="text-xs text-slate-300">{x.request_number} · {x.product}</p>
+              <small className="text-[10px] text-slate-600">{x.sector} · {x.request_time || ''}</small>
+            </div>
+          </Link>
+        ))}
+        {latest.length === 0 && <p className="py-4 text-xs text-slate-600">Sem solicitações recentes.</p>}
+      </section>
+
+      <section id="calendario" className="glass p-5">
+        <div className="flex items-center justify-between">
+          <h2 className="section-title">Julho 2026</h2>
+          <CalendarDays size={17} className="text-violet-300" />
+        </div>
+        <div className="mt-4 grid grid-cols-7 gap-1 text-center text-[10px] text-slate-600">
+          {'DSTQQSS'.split('').map((d, i) => <b key={i}>{d}</b>)}
+          {Array.from({ length: 31 }, (_, i) => (
+            <span key={i} className={`grid aspect-square place-items-center rounded-lg ${i === 17 ? 'bg-violet-600 text-white' : i > 14 && i < 21 ? 'text-slate-300' : 'text-slate-500'}`}>{i + 1}</span>
+          ))}
+        </div>
+      </section>
+
+      <section id="indicadores" className="glass p-5">
+        <h2 className="section-title">Indicadores</h2>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          {metrics.map(([l, v, I, c]) => (
+            <div key={l} className="rounded-xl bg-white/[.035] p-3">
+              <I size={15} className={c} />
+              <strong className="mt-3 block text-sm text-white">{v}</strong>
+              <small className="text-[10px] text-slate-500">{l}</small>
+            </div>
+          ))}
+        </div>
+      </section>
+    </aside>
+  );
+}
