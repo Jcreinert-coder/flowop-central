@@ -1,0 +1,95 @@
+{
+  "name": "ProductionRequest",
+  "type": "object",
+  "properties": {
+    "request_number": {
+      "type": "string"
+    },
+    "op_number": {
+      "type": "string"
+    },
+    "technician_name": {
+      "type": "string"
+    },
+    "sector": {
+      "type": "string"
+    },
+    "product": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "number"
+    },
+    "unit": {
+      "type": "string",
+      "enum": [
+        "kg",
+        "t",
+        "un",
+        "L",
+        "m"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "Normal",
+        "Alta",
+        "Urgente"
+      ],
+      "default": "Normal"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Recebida",
+        "Em Atendimento",
+        "OP Criada",
+        "Retornada",
+        "Apontada",
+        "Conclu\u00edda"
+      ],
+      "default": "Recebida"
+    },
+    "request_time": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string"
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "completed": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "request_number",
+    "technician_name",
+    "sector",
+    "product",
+    "quantity",
+    "unit",
+    "reason",
+    "priority",
+    "status"
+  ]
+}
