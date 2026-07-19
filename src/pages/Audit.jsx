@@ -26,9 +26,9 @@ export default function Audit() {
           </div>
           <section className="glass overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[900px] text-left text-xs">
+              <table className="w-full min-w-[960px] text-left text-xs">
                 <thead className="border-y border-white/5 bg-white/[.02] text-slate-500">
-                  <tr>{['Data', 'Hora', 'Usuário', 'Ação', 'Solicitação', 'Detalhes'].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
+                  <tr>{['Data', 'Hora', 'Usuário', 'Ação', 'Solicitação', 'Afetado', 'Detalhes'].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
                 </thead>
                 <tbody>
                   {rows.map((r) => {
@@ -40,6 +40,7 @@ export default function Audit() {
                         <td className="px-4 text-white">{r.user_name}</td>
                         <td className="px-4">{r.action}</td>
                         <td className="px-4 font-mono">{r.request_number || '—'}</td>
+                        <td className="px-4">{r.affected_user || '—'}</td>
                         <td className="px-4 text-slate-400">{r.details || '—'}</td>
                       </tr>
                     );

@@ -17,6 +17,8 @@ import Requests from '@/pages/Requests';
 import RequestDetail from '@/pages/RequestDetail';
 import Audit from '@/pages/Audit';
 import Reports from '@/pages/Reports';
+import Users from '@/pages/Users';
+import Settings from '@/pages/Settings';
 import { RoleProvider } from '@/lib/RoleContext';
 
 const AuthenticatedApp = () => {
@@ -57,6 +59,8 @@ const AuthenticatedApp = () => {
           <Route path="/solicitacoes/:id" element={<RequestDetail />} />
           <Route path="/auditoria" element={<Audit />} />
           <Route path="/relatorios" element={<Reports />} />
+          <Route path="/usuarios" element={<Users />} />
+          <Route path="/configuracoes" element={<Settings />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

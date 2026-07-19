@@ -4,44 +4,31 @@ import Sidebar from '@/components/production/Sidebar';
 import Topbar from '@/components/production/Topbar';
 import KPIGrid from '@/components/production/KPIGrid';
 import ChartsGrid from '@/components/production/ChartsGrid';
-import QueueTable, { demo } from '@/components/production/QueueTable';
-import RightPanel from '@/components/production/RightPanel';
+import QueueTable from '@/components/production/QueueTable';
 import { useRole } from '@/lib/RoleContext';
 
 export default function Dashboard() {
-  const { profile, sector } = useRole();
-  const [rows, setRows] = useState(demo);
+  const { profile, area } = useRole();
+  const [rows, setRows] = useState([]);
 
   useEffect(() => {
     base44.entities.ProductionRequest.list('-created_date', 200)
-      .then((x) => setRows([...x, ...demo]))
-      .catch(() => setRows(demo));
+      .then(setRows)
+      .catch(() => setRows([]));
   }, []);
 
-  const scoped = profile === 'tecnico' ? rows.filter((r) => r.sector === sector) : rows;
+  const scoped = profile === 'tecnico' ? rows.filter((r) => r.area === area) : rows;
   const recent = [...scoped].slice(0, 6);
 
   return (
     <div className="min-h-screen bg-[#0F172A] text-slate-300">
       <Sidebar />
       <main className="lg:ml-64">
-        <div className="mx-auto max-w-[1800px] space-y-5 p-4 md:p-7">
+        <div className="mx-auto max-w-[1500px] space-y-8 p-4 md:p-8">
           <Topbar />
-          <div className="flex justify-end">
-            <select aria-label="Período" className="glass h-10 bg-[#111b31] px-3 text-xs outline-none">
-              <option>Últimos 30 dias</option>
-              <option>Esta semana</option>
-              <option>Hoje</option>
-            </select>
-          </div>
-          <KPIGrid rows={rows} profile={profile} sector={sector} />
-          <div className="grid gap-4 2xl:grid-cols-[1fr_300px]">
-            <div className="space-y-4">
-              <ChartsGrid rows={rows} profile={profile} sector={sector} />
-              <QueueTable rows={recent} compact />
-            </div>
-            <RightPanel rows={rows} />
-          </div>
+          <KPIGrid rows={rows} profile={profile} area={area} />
+          <ChartsGrid rows={rows} profile={profile} area={area} />
+          <QueueTable rows={recent} compact />
         </div>
       </main>
     </div>

@@ -6,17 +6,18 @@ import SignaturePad from '@/components/production/SignaturePad';
 import Sidebar from '@/components/production/Sidebar';
 import { useRole } from '@/lib/RoleContext';
 import { logAudit } from '@/lib/audit';
+import { AREAS } from '@/lib/areas';
 
 const UNITS = ['kg', 'caixas', 'pacotes', 'unidades', 'litros'];
 
 export default function NewRequest() {
   const nav = useNavigate();
-  const { user, name, sector, profile } = useRole();
+  const { user, name, area, profile } = useRole();
   const [busy, setBusy] = useState(false);
   const [sig, setSig] = useState('');
   const [form, setForm] = useState({
     technician_name: name,
-    sector: profile === 'tecnico' && sector !== 'Supply' ? sector : 'Produção',
+    area: profile === 'tecnico' ? area : '',
     product: '',
     product_code: '',
     quantity: '',
@@ -36,7 +37,6 @@ export default function NewRequest() {
     const item = await base44.entities.ProductionRequest.create({
       ...form,
       quantity: Number(form.quantity),
-      product_code: form.product_code,
       tech_user_id: user?.id,
       request_number,
       status: 'Recebida',
@@ -52,11 +52,9 @@ export default function NewRequest() {
         { label: 'Finalizada', completed: false },
       ],
     });
-    await logAudit({ user, action: 'Solicitação criada', entityId: item.id, requestNumber: request_number, details: `${form.product} · ${form.quantity} ${form.unit} · ${form.sector}` });
+    await logAudit({ user, action: 'Solicitação criada', entityId: item.id, requestNumber: request_number, details: `${form.product} · ${form.quantity} ${form.unit} · ${form.area}` });
     nav(`/solicitacoes/${item.id}`);
   };
-
-  const readonly = (field) => profile === 'tecnico';
 
   return (
     <div className="min-h-screen bg-[#0F172A] text-slate-300">
@@ -79,8 +77,15 @@ export default function NewRequest() {
                 <input required value={form.technician_name} onChange={(e) => set('technician_name', e.target.value)} className="form-input" />
               </label>
               <label>
-                <span className="form-label">Setor (automático)</span>
-                <input readOnly value={form.sector} className="form-input opacity-70" />
+                <span className="form-label">Área de Produção</span>
+                {profile === 'tecnico' ? (
+                  <input readOnly value={form.area} className="form-input opacity-70" />
+                ) : (
+                  <select required value={form.area} onChange={(e) => set('area', e.target.value)} className="form-input">
+                    <option value="">Selecione...</option>
+                    {AREAS.map((a) => <option key={a}>{a}</option>)}
+                  </select>
+                )}
               </label>
               <label>
                 <span className="form-label">Produto</span>

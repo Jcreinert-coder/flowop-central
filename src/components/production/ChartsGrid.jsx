@@ -13,12 +13,6 @@ function tally(rows, key) {
   return Object.entries(map).map(([n, v]) => ({ n, v })).sort((a, b) => b.v - a.v);
 }
 
-function byUnit(rows) {
-  const map = {};
-  rows.forEach((r) => { map[r.unit] = (map[r.unit] || 0) + (Number(r.quantity) || 0); });
-  return Object.entries(map).map(([n, v]) => ({ n, v }));
-}
-
 function byDay(rows) {
   const map = {};
   rows.forEach((r) => { const d = (r.request_date || '').slice(5); if (!d) return; map[d] = (map[d] || 0) + 1; });
@@ -31,22 +25,28 @@ function byMonth(rows) {
   return Object.entries(map).sort().map(([n, v]) => ({ n, v }));
 }
 
-export default function ChartsGrid({ rows, profile, sector }) {
-  const scoped = profile === 'tecnico' ? rows.filter((r) => r.sector === sector) : rows;
+const empty = [{ n: '—', v: 0 }];
+
+export default function ChartsGrid({ rows, profile, area }) {
+  const scoped = profile === 'tecnico' ? rows.filter((r) => r.area === area) : rows;
   const porDia = byDay(scoped);
+  const porArea = tally(scoped, 'area');
+  const porStatus = tally(scoped, 'status');
   const porProduto = tally(scoped, 'product').slice(0, 6);
-  const porUnidade = byUnit(scoped);
   const porMes = byMonth(scoped);
+  const pieData = profile === 'tecnico' ? porStatus : porArea;
+  const pieTitle = profile === 'tecnico' ? 'Solicitações por status' : 'Solicitações por área';
 
   return (
-    <section id="graficos" className="grid gap-4 xl:grid-cols-3">
-      <article className="glass p-5 xl:col-span-2">
+    <section className="grid gap-4 lg:grid-cols-2">
+      <article className="glass p-5">
         <h2 className="section-title">Solicitações por dia</h2>
-        <div className="h-64">
+        <div className="mt-4 h-64">
           <ResponsiveContainer>
-            <BarChart data={porDia.length ? porDia : [{ n: 'Hoje', v: scoped.length }]}>
+            <BarChart data={porDia.length ? porDia : empty}>
               <CartesianGrid vertical={false} stroke="#ffffff0a" />
               <XAxis dataKey="n" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} />
               <Tooltip content={<Tip />} />
               <Bar dataKey="v" name="Solicitações" fill="#8b5cf6" radius={[8, 8, 2, 2]} />
             </BarChart>
@@ -55,12 +55,12 @@ export default function ChartsGrid({ rows, profile, sector }) {
       </article>
 
       <article className="glass p-5">
-        <h2 className="section-title">{profile === 'tecnico' ? 'Produtos mais solicitados' : 'Solicitações por setor'}</h2>
-        <div className="h-48">
+        <h2 className="section-title">{pieTitle}</h2>
+        <div className="mt-4 h-64">
           <ResponsiveContainer>
             <PieChart>
-              <Pie data={profile === 'tecnico' ? porProduto : tally(scoped, 'sector')} dataKey="v" innerRadius={52} outerRadius={78} paddingAngle={5}>
-                {(profile === 'tecnico' ? porProduto : tally(scoped, 'sector')).map((_, i) => <Cell key={i} fill={palette[i % palette.length]} />)}
+              <Pie data={pieData.length ? pieData : empty} dataKey="v" innerRadius={56} outerRadius={88} paddingAngle={4}>
+                {(pieData.length ? pieData : empty).map((_, i) => <Cell key={i} fill={palette[i % palette.length]} />)}
               </Pie>
               <Tooltip content={<Tip />} />
             </PieChart>
@@ -68,45 +68,37 @@ export default function ChartsGrid({ rows, profile, sector }) {
         </div>
       </article>
 
-      {profile !== 'tecnico' && (
-        <article className="glass p-5">
-          <h2 className="section-title">Solicitações por técnico</h2>
-          <div className="h-56">
-            <ResponsiveContainer>
-              <BarChart data={tally(scoped, 'technician_name')} layout="vertical">
-                <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} />
-                <YAxis type="category" dataKey="n" axisLine={false} tickLine={false} width={90} tick={{ fill: '#94a3b8', fontSize: 11 }} />
-                <Tooltip content={<Tip />} />
-                <Bar dataKey="v" name="Solicitações" fill="#22d3ee" radius={[0, 6, 6, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </article>
-      )}
-
       <article className="glass p-5">
-        <h2 className="section-title">Quantidade por unidade de medida</h2>
-        <div className="h-56">
+        <h2 className="section-title">Produtos mais solicitados</h2>
+        <div className="mt-4 h-64">
           <ResponsiveContainer>
-            <BarChart data={porUnidade}>
-              <CartesianGrid vertical={false} stroke="#ffffff0a" />
-              <XAxis dataKey="n" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} />
+            <BarChart data={porProduto.length ? porProduto : empty} layout="vertical">
+              <CartesianGrid horizontal={false} stroke="#ffffff0a" />
+              <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} />
+              <YAxis type="category" dataKey="n" axisLine={false} tickLine={false} width={100} tick={{ fill: '#94a3b8', fontSize: 11 }} />
               <Tooltip content={<Tip />} />
-              <Bar dataKey="v" name="Quantidade" fill="#34d399" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="v" name="Solicitações" fill="#34d399" radius={[0, 6, 6, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </article>
 
-      <article className="glass p-5 xl:col-span-2">
-        <h2 className="section-title">Histórico mensal</h2>
-        <div className="h-48">
+      <article className="glass p-5">
+        <h2 className="section-title">Evolução mensal</h2>
+        <div className="mt-4 h-64">
           <ResponsiveContainer>
-            <AreaChart data={porMes.length ? porMes : [{ n: '2026-07', v: scoped.length }]}>
+            <AreaChart data={porMes.length ? porMes : empty}>
+              <defs>
+                <linearGradient id="gMes" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="#22d3ee" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid vertical={false} stroke="#ffffff0a" />
               <XAxis dataKey="n" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} />
               <Tooltip content={<Tip />} />
-              <Area dataKey="v" name="Solicitações" stroke="#22d3ee" strokeWidth={3} fill="#22d3ee18" />
+              <Area dataKey="v" name="Solicitações" stroke="#22d3ee" strokeWidth={3} fill="url(#gMes)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>

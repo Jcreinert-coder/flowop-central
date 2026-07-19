@@ -3,15 +3,14 @@ import { base44 } from '@/api/base44Client';
 import { ArrowLeft, Download, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Sidebar from '@/components/production/Sidebar';
-import { demo } from '@/components/production/QueueTable';
 
-const HEADERS = ['Solicitação', 'Data', 'Hora', 'Setor', 'Técnico', 'Produto', 'Código', 'Quantidade', 'Unidade', 'Prioridade', 'Status', 'OP', 'Resp. Supply'];
+const HEADERS = ['Solicitação', 'Data', 'Hora', 'Área', 'Técnico', 'Produto', 'Código', 'Quantidade', 'Unidade', 'Prioridade', 'Status', 'OP', 'Resp. Supply'];
 
 function toCSV(rows) {
   const lines = [HEADERS.join(';')];
   rows.forEach((r) => {
     lines.push(HEADERS.map((h, i) => {
-      const map = [r.request_number, r.request_date, r.request_time, r.sector, r.technician_name, r.product, r.product_code, r.quantity, r.unit, r.priority, r.status, r.op_number, r.supply_responsible];
+      const map = [r.request_number, r.request_date, r.request_time, r.area, r.technician_name, r.product, r.product_code, r.quantity, r.unit, r.priority, r.status, r.op_number, r.supply_responsible];
       const v = String(map[i] ?? '');
       return `"${v.replace(/"/g, '""')}"`;
     }).join(';'));
@@ -28,13 +27,13 @@ function download(filename, content, type) {
 }
 
 export default function Reports() {
-  const [rows, setRows] = useState(demo);
+  const [rows, setRows] = useState([]);
   const [periodo, setPeriodo] = useState('diario');
 
   useEffect(() => {
     base44.entities.ProductionRequest.list('-created_date', 500)
-      .then((x) => setRows([...x, ...demo]))
-      .catch(() => setRows(demo));
+      .then(setRows)
+      .catch(() => setRows([]));
   }, []);
 
   const today = new Date().toISOString().slice(0, 10);
@@ -58,7 +57,7 @@ export default function Reports() {
       let y = 32;
       doc.text(HEADERS.join(' | '), 14, y); y += 6;
       filtered.slice(0, 40).forEach((r) => {
-        doc.text([r.request_number, r.request_date, r.sector, r.technician_name, r.product, r.quantity + r.unit, r.priority, r.status, r.op_number].join(' | '), 14, y);
+        doc.text([r.request_number, r.request_date, r.area, r.technician_name, r.product, r.quantity + r.unit, r.priority, r.status, r.op_number].join(' | '), 14, y);
         y += 5;
         if (y > 200) { doc.addPage(); y = 20; }
       });
@@ -100,7 +99,7 @@ export default function Reports() {
                       <td className="px-4 py-3 font-mono text-white">{r.request_number}</td>
                       <td className="px-4">{r.request_date || '—'}</td>
                       <td className="px-4">{r.request_time || '—'}</td>
-                      <td className="px-4">{r.sector}</td>
+                      <td className="px-4">{r.area}</td>
                       <td className="px-4 text-white">{r.technician_name}</td>
                       <td className="px-4">{r.product}</td>
                       <td className="px-4">{r.product_code || '—'}</td>

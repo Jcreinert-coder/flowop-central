@@ -15,21 +15,31 @@
       "enum": [
         "tecnico",
         "supply",
-        "gestor"
+        "lider"
       ],
       "description": "Perfil funcional no CSOP"
     },
-    "sector": {
+    "area": {
       "type": "string",
       "enum": [
-        "Produ\u00e7\u00e3o",
-        "Expedi\u00e7\u00e3o",
-        "Qualidade",
-        "Almoxarifado",
-        "Mistura",
-        "PCP",
-        "Envase"
-      ]
+        "Pasta",
+        "P\u00f3",
+        "Sach\u00ea",
+        "L\u00edquido"
+      ],
+      "description": "\u00c1rea de produ\u00e7\u00e3o vinculada ao usu\u00e1rio"
+    },
+    "cargo": {
+      "type": "string",
+      "description": "Cargo/fun\u00e7\u00e3o do usu\u00e1rio"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Ativo",
+        "Inativo"
+      ],
+      "default": "Ativo"
     }
   },
   "required": [

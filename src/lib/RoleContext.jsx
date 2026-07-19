@@ -14,19 +14,18 @@ export function RoleProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const profile = user?.profile || (user?.role === 'admin' ? 'gestor' : 'supply');
-  const sector = user?.sector || 'Supply';
+  const profile = user?.profile || 'supply';
+  const area = user?.area || '';
+  const cargo = user?.cargo || '';
   const name = user?.full_name || 'Usuário';
-  const canManage = profile === 'supply' || profile === 'gestor';
-  const isGestor = profile === 'gestor';
-
-  const setProfile = async (p, s) => {
-    const u = await base44.auth.updateMe({ profile: p, sector: s });
-    setUser((prev) => ({ ...prev, ...u, profile: p, sector: s }));
-  };
+  const status = user?.status || 'Ativo';
+  const isAdmin = profile === 'supply' || profile === 'lider';
+  const canManage = isAdmin;
+  const canDelete = isAdmin;
+  const active = status !== 'Inativo';
 
   return (
-    <C.Provider value={{ user, loading, profile, sector, name, canManage, isGestor, setProfile }}>
+    <C.Provider value={{ user, loading, profile, area, cargo, name, status, active, isAdmin, canManage, canDelete }}>
       {children}
     </C.Provider>
   );

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { ArrowLeft, Check, Clock3, FileText, Send } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
+import { ArrowLeft, Check, Clock3, FileText, Send, Trash2 } from 'lucide-react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '@/components/production/Sidebar';
 import StatusActions from '@/components/production/StatusActions';
-import { demo } from '@/components/production/QueueTable';
+import DeleteDialog from '@/components/production/DeleteDialog';
 import { useRole } from '@/lib/RoleContext';
 import { logAudit } from '@/lib/audit';
 
@@ -12,14 +12,18 @@ const timeline = ['Solicitação criada', 'Recebida pelo Supply', 'OP criada', '
 
 export default function RequestDetail() {
   const { id } = useParams();
-  const isDemo = id.startsWith('demo-');
-  const { user, name, profile, canManage } = useRole();
-  const [item, setItem] = useState(demo.find((x) => x.id === id) || null);
-  const [loading, setLoading] = useState(!isDemo);
+  const nav = useNavigate();
+  const { user, name, profile, canManage, canDelete } = useRole();
+  const [item, setItem] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [note, setNote] = useState('');
+  const [delOpen, setDelOpen] = useState(false);
 
   useEffect(() => {
-    if (!isDemo) base44.entities.ProductionRequest.get(id).then((x) => { setItem(x); setLoading(false); });
+    base44.entities.ProductionRequest.get(id)
+      .then((x) => setItem(x))
+      .catch(() => setItem(null))
+      .finally(() => setLoading(false));
   }, [id]);
 
   if (loading) return <div className="grid min-h-screen place-items-center bg-[#0F172A] text-violet-300">Carregando solicitação...</div>;
@@ -31,7 +35,7 @@ export default function RequestDetail() {
     ['Data', item.request_date ? new Date(item.request_date + 'T00:00').toLocaleDateString('pt-BR') : '—'],
     ['Hora', item.request_time || '—'],
     ['Técnico Solicitante', item.technician_name],
-    ['Setor', item.sector],
+    ['Área de Produção', item.area],
     ['Produto', item.product],
     ['Código do Produto', item.product_code || '—'],
     ['Quantidade', `${Number(item.quantity).toLocaleString('pt-BR')} ${item.unit}`],
@@ -44,12 +48,22 @@ export default function RequestDetail() {
   const addNote = async () => {
     if (!note.trim()) return;
     const stamp = `${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })} · ${name}: ${note.trim()}`;
-    const updated = isDemo
-      ? { ...item, supply_notes: item.supply_notes ? `${item.supply_notes}\n${stamp}` : stamp }
-      : await base44.entities.ProductionRequest.update(item.id, { supply_notes: item.supply_notes ? `${item.supply_notes}\n${stamp}` : stamp });
+    const updated = await base44.entities.ProductionRequest.update(item.id, { supply_notes: item.supply_notes ? `${item.supply_notes}\n${stamp}` : stamp });
     setItem(updated);
-    if (!isDemo) await logAudit({ user, action: 'Observação adicionada', entityId: item.id, requestNumber: item.request_number, details: note.trim() });
+    await logAudit({ user, action: 'Observação adicionada', entityId: item.id, requestNumber: item.request_number, details: note.trim() });
     setNote('');
+  };
+
+  const confirmDelete = async (motivo) => {
+    setDelOpen(false);
+    await base44.entities.ProductionRequest.delete(item.id);
+    const now = new Date();
+    await logAudit({
+      user, action: 'Solicitação excluída',
+      entityId: item.id, requestNumber: item.request_number,
+      details: `Solicitação excluída por ${name} em ${now.toLocaleDateString('pt-BR')} às ${now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}. Motivo: ${motivo}`,
+    });
+    nav('/solicitacoes');
   };
 
   return (
@@ -57,7 +71,12 @@ export default function RequestDetail() {
       <Sidebar />
       <main className="lg:ml-64">
         <div className="mx-auto max-w-5xl space-y-6 p-4 md:p-8">
-          <Link to="/solicitacoes" className="inline-flex items-center gap-2 text-sm text-slate-400"><ArrowLeft size={16} />Voltar às solicitações</Link>
+          <div className="flex items-center justify-between">
+            <Link to="/solicitacoes" className="inline-flex items-center gap-2 text-sm text-slate-400"><ArrowLeft size={16} />Voltar às solicitações</Link>
+            {canDelete && (
+              <button onClick={() => setDelOpen(true)} className="flex h-10 items-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 text-sm text-rose-300 hover:bg-rose-500/20"><Trash2 size={16} />Excluir</button>
+            )}
+          </div>
           <div className="glass p-6 md:p-8">
             <div className="flex justify-between border-b border-white/10 pb-6">
               <div>
@@ -90,7 +109,7 @@ export default function RequestDetail() {
             )}
 
             {canManage ? (
-              <StatusActions item={item} user={user} onUpdate={setItem} isDemo={isDemo} />
+              <StatusActions item={item} user={user} onUpdate={setItem} />
             ) : (
               <section className="glass mt-5 p-5">
                 <p className="text-sm text-slate-400">Você está acompanhando esta solicitação. Alterações de status são realizadas pelo Supply.</p>
@@ -149,6 +168,13 @@ export default function RequestDetail() {
           </div>
         </div>
       </main>
+      <DeleteDialog
+        open={delOpen}
+        onClose={() => setDelOpen(false)}
+        onConfirm={confirmDelete}
+        title="Excluir solicitação"
+        description={`${item.request_number} · ${item.product}`}
+      />
     </div>
   );
 }
