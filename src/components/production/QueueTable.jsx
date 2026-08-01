@@ -1,18 +1,10 @@
 import { ArrowUpRight, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { statusColor } from '@/lib/areas';
 
-const colors = {
-  'Recebida': 'bg-amber-400/10 text-amber-300',
-  'Em Atendimento': 'bg-sky-400/10 text-sky-300',
-  'OP Criada': 'bg-emerald-400/10 text-emerald-300',
-  'Em Produção': 'bg-indigo-400/10 text-indigo-300',
-  'Apontada': 'bg-cyan-400/10 text-cyan-300',
-  'Finalizada': 'bg-green-400/10 text-green-300',
-  'Cancelada': 'bg-rose-400/10 text-rose-300',
-};
 const prioColors = { 'Urgente': 'bg-rose-500/15 text-rose-300', 'Normal': 'bg-slate-500/15 text-slate-300' };
 
-const COLUMNS = ['Solicitação', 'Data', 'Hora', 'Área', 'Técnico', 'Produto', 'Qtd.', 'Un.', 'Prioridade', 'Status', 'OP', 'Resp. Supply'];
+const COLUMNS = ['Solicitação', 'Data', 'Hora', 'Área', 'Etapa', 'Técnico', 'Produto', 'Qtd.', 'Un.', 'Prioridade', 'Status', 'OP', 'Resp. Supply'];
 
 export default function QueueTable({ rows = [], compact = false, onDelete, canDelete = false }) {
   const cols = compact ? ['Status', 'Solicitante', 'Área', 'Produto', 'Quantidade', 'Prioridade', 'Hora', 'Solicitação', 'OP', ''] : COLUMNS;
@@ -38,7 +30,7 @@ export default function QueueTable({ rows = [], compact = false, onDelete, canDe
               <tr key={r.id} className="border-b border-white/5 text-slate-300 transition hover:bg-white/[.025]">
                 {compact ? (
                   <>
-                    <td className="px-4 py-3"><span className={`rounded-full px-2.5 py-1 ${colors[r.status] || colors.Recebida}`}>{r.status}</span></td>
+                    <td className="px-4 py-3"><span className={`rounded-full px-2.5 py-1 ${statusColor(r.status)}`}>{r.status}</span></td>
                     <td className="px-4 text-white">{r.technician_name}</td>
                     <td className="px-4">{r.area}</td>
                     <td className="px-4">{r.product}</td>
@@ -55,12 +47,13 @@ export default function QueueTable({ rows = [], compact = false, onDelete, canDe
                     <td className="px-4">{r.request_date ? new Date(r.request_date + 'T00:00').toLocaleDateString('pt-BR') : '—'}</td>
                     <td className="px-4">{r.request_time}</td>
                     <td className="px-4">{r.area}</td>
+                    <td className="px-4">{r.etapa || '—'}</td>
                     <td className="px-4 text-white">{r.technician_name}</td>
                     <td className="px-4">{r.product}{r.product_code ? <span className="ml-1 text-slate-600">#{r.product_code}</span> : ''}</td>
                     <td className="px-4">{Number(r.quantity).toLocaleString('pt-BR')}</td>
                     <td className="px-4">{r.unit}</td>
                     <td className="px-4"><span className={`rounded-full px-2 py-0.5 ${prioColors[r.priority]}`}>{r.priority}</span></td>
-                    <td className="px-4"><span className={`rounded-full px-2.5 py-1 ${colors[r.status] || colors.Recebida}`}>{r.status}</span></td>
+                    <td className="px-4"><span className={`rounded-full px-2.5 py-1 ${statusColor(r.status)}`}>{r.status}</span></td>
                     <td className="px-4 font-mono">{r.op_number || '—'}</td>
                     <td className="px-4">{r.supply_responsible || '—'}</td>
                     <td className="px-4">

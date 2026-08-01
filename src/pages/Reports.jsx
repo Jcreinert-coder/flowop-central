@@ -4,13 +4,13 @@ import { ArrowLeft, Download, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Sidebar from '@/components/production/Sidebar';
 
-const HEADERS = ['Solicitação', 'Data', 'Hora', 'Área', 'Técnico', 'Produto', 'Código', 'Quantidade', 'Unidade', 'Prioridade', 'Status', 'OP', 'Resp. Supply'];
+const HEADERS = ['Solicitação', 'Data', 'Hora', 'Área', 'Etapa', 'Técnico', 'Produto', 'Código', 'Quantidade', 'Unidade', 'Prioridade', 'Status', 'OP', 'Resp. Supply'];
 
 function toCSV(rows) {
   const lines = [HEADERS.join(';')];
   rows.forEach((r) => {
     lines.push(HEADERS.map((h, i) => {
-      const map = [r.request_number, r.request_date, r.request_time, r.area, r.technician_name, r.product, r.product_code, r.quantity, r.unit, r.priority, r.status, r.op_number, r.supply_responsible];
+      const map = [r.request_number, r.request_date, r.request_time, r.area, r.etapa, r.technician_name, r.product, r.product_code, r.quantity, r.unit, r.priority, r.status, r.op_number, r.supply_responsible];
       const v = String(map[i] ?? '');
       return `"${v.replace(/"/g, '""')}"`;
     }).join(';'));
@@ -100,6 +100,7 @@ export default function Reports() {
                       <td className="px-4">{r.request_date || '—'}</td>
                       <td className="px-4">{r.request_time || '—'}</td>
                       <td className="px-4">{r.area}</td>
+                      <td className="px-4">{r.etapa || '—'}</td>
                       <td className="px-4 text-white">{r.technician_name}</td>
                       <td className="px-4">{r.product}</td>
                       <td className="px-4">{r.product_code || '—'}</td>

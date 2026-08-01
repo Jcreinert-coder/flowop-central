@@ -1,8 +1,8 @@
-import { ArrowLeft, FileText, Layers, Ruler, ScrollText, Settings as SettingsIcon, ShieldCheck, UsersRound } from 'lucide-react';
+import { ArrowLeft, FileText, Layers, ListTree, Ruler, ScrollText, Settings as SettingsIcon, ShieldCheck, UsersRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Sidebar from '@/components/production/Sidebar';
 import { useRole } from '@/lib/RoleContext';
-import { AREAS } from '@/lib/areas';
+import { AREAS, ETAPAS, PRODUTOS_POR_ETAPA } from '@/lib/areas';
 
 const UNITS = ['kg', 'caixas', 'pacotes', 'unidades', 'litros'];
 
@@ -74,6 +74,24 @@ export default function Settings() {
               </div>
             </section>
           </div>
+
+          <section className="glass p-5">
+            <h2 className="flex items-center gap-2 section-title"><ListTree size={16} />Etapas e Produtos</h2>
+            <div className="mt-4 grid gap-4 md:grid-cols-3">
+              {ETAPAS.map((etapa) => (
+                <div key={etapa} className="rounded-xl bg-white/[.035] p-4">
+                  <b className="text-sm text-white">{etapa}</b>
+                  <ul className="mt-3 space-y-1.5">
+                    {(PRODUTOS_POR_ETAPA[etapa] || []).map((p) => (
+                      <li key={p} className="flex items-center gap-2 text-xs text-slate-400">
+                        <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />{p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
 
           <section className="glass p-5">
             <h2 className="flex items-center gap-2 section-title"><ShieldCheck size={16} />Permissões por perfil</h2>

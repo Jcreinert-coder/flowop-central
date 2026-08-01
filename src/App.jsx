@@ -19,6 +19,7 @@ import Audit from '@/pages/Audit';
 import Reports from '@/pages/Reports';
 import Users from '@/pages/Users';
 import Settings from '@/pages/Settings';
+import Planejamento from '@/pages/Planejamento';
 import { RoleProvider } from '@/lib/RoleContext';
 
 const AuthenticatedApp = () => {
@@ -60,6 +61,7 @@ const AuthenticatedApp = () => {
           <Route path="/auditoria" element={<Audit />} />
           <Route path="/relatorios" element={<Reports />} />
           <Route path="/usuarios" element={<Users />} />
+          <Route path="/planejamento" element={<Planejamento />} />
           <Route path="/configuracoes" element={<Settings />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />

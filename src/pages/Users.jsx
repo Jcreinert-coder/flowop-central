@@ -8,7 +8,7 @@ import { useRole } from '@/lib/RoleContext';
 import { logAudit } from '@/lib/audit';
 import { AREAS, PROFILES, profileLabel, roleForInvite } from '@/lib/areas';
 
-const blank = { full_name: '', email: '', cargo: '', area: AREAS[0], profile: 'tecnico', status: 'Ativo' };
+const blank = { full_name: '', email: '', cargo: '', area: '', profile: 'tecnico', status: 'Ativo' };
 
 export default function Users() {
   const { user, isAdmin } = useRole();
@@ -143,9 +143,9 @@ export default function Users() {
 }
 
 function UserForm({ initial, busy, onClose, onSave }) {
-  const [f, setF] = useState({ full_name: initial.full_name || '', email: initial.email || '', cargo: initial.cargo || '', area: initial.area || AREAS[0], profile: initial.profile || 'tecnico', status: initial.status || 'Ativo' });
+  const [f, setF] = useState({ full_name: initial.full_name || '', email: initial.email || '', cargo: initial.cargo || '', area: initial.area || '', profile: initial.profile || 'tecnico', status: initial.status || 'Ativo' });
   const isNew = !initial.id;
-  const set = (k, v) => setF({ ...f, [k]: v });
+  const set = (k, v) => setF({ ...f, [k]: v, ...(k === 'profile' && v !== 'tecnico' ? { area: '' } : {}) });
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4 backdrop-blur-sm">
@@ -169,9 +169,14 @@ function UserForm({ initial, busy, onClose, onSave }) {
           </label>
           <label>
             <span className="form-label">Área de Produção</span>
-            <select value={f.area} onChange={(e) => set('area', e.target.value)} className="form-input">
-              {AREAS.map((a) => <option key={a}>{a}</option>)}
-            </select>
+            {f.profile === 'tecnico' ? (
+              <select required value={f.area} onChange={(e) => set('area', e.target.value)} className="form-input">
+                <option value="">Selecione...</option>
+                {AREAS.map((a) => <option key={a}>{a}</option>)}
+              </select>
+            ) : (
+              <input readOnly value="Não aplicável ao perfil" className="form-input opacity-50" />
+            )}
           </label>
           <label>
             <span className="form-label">Perfil de acesso</span>

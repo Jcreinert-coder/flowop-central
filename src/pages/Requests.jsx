@@ -7,7 +7,7 @@ import QueueTable from '@/components/production/QueueTable';
 import DeleteDialog from '@/components/production/DeleteDialog';
 import { useRole } from '@/lib/RoleContext';
 import { logAudit } from '@/lib/audit';
-import { AREAS } from '@/lib/areas';
+import { AREAS, STATUS_ALL } from '@/lib/areas';
 
 export default function Requests() {
   const { user, name, profile, area, canDelete } = useRole();
@@ -73,7 +73,7 @@ export default function Requests() {
               )}
               <select value={status} onChange={(e) => setStatus(e.target.value)} className="glass h-11 bg-[#111b31] px-3 text-xs outline-none">
                 <option value="">Todos os status</option>
-                {['Recebida', 'Em Atendimento', 'OP Criada', 'Em Produção', 'Apontada', 'Finalizada', 'Cancelada'].map((s) => <option key={s}>{s}</option>)}
+                {STATUS_ALL.map((s) => <option key={s}>{s}</option>)}
               </select>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { ClipboardList, Factory, FileText, LayoutDashboard, PlusCircle, ScrollText, Settings, UsersRound } from 'lucide-react';
+import { CalendarDays, ClipboardList, Factory, FileText, LayoutDashboard, PlusCircle, ScrollText, Settings, UsersRound } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useRole } from '@/lib/RoleContext';
 import { profileLabel } from '@/lib/areas';
@@ -11,6 +11,7 @@ export default function Sidebar() {
     ['Dashboard', LayoutDashboard, '/'],
     ['Nova Solicitação', PlusCircle, '/nova-solicitacao'],
     ['Solicitações', ClipboardList, '/solicitacoes'],
+    ...(isAdmin ? [['Planejamento', CalendarDays, '/planejamento']] : []),
     ...(isAdmin ? [['Auditoria', ScrollText, '/auditoria']] : []),
     ...(isAdmin ? [['Relatórios', FileText, '/relatorios']] : []),
     ...(isAdmin ? [['Usuários', UsersRound, '/usuarios']] : []),

@@ -7,8 +7,9 @@ import StatusActions from '@/components/production/StatusActions';
 import DeleteDialog from '@/components/production/DeleteDialog';
 import { useRole } from '@/lib/RoleContext';
 import { logAudit } from '@/lib/audit';
+import { MILESTONES, statusColor } from '@/lib/areas';
 
-const timeline = ['Solicitação criada', 'Recebida pelo Supply', 'OP criada', 'Em Produção', 'Apontada', 'Finalizada'];
+const timeline = MILESTONES;
 
 export default function RequestDetail() {
   const { id } = useParams();
@@ -36,9 +37,10 @@ export default function RequestDetail() {
     ['Hora', item.request_time || '—'],
     ['Técnico Solicitante', item.technician_name],
     ['Área de Produção', item.area],
+    ['Etapa', item.etapa || '—'],
     ['Produto', item.product],
     ['Código do Produto', item.product_code || '—'],
-    ['Quantidade', `${Number(item.quantity).toLocaleString('pt-BR')} ${item.unit}`],
+    ['Quantidade Solicitada', `${Number(item.quantity).toLocaleString('pt-BR')} ${item.unit}`],
     ['Prioridade', item.priority],
     ['Status', item.status],
     ['Responsável Supply', item.supply_responsible || '—'],
@@ -83,7 +85,7 @@ export default function RequestDetail() {
                 <p className="text-sm text-violet-300">Detalhes da Solicitação</p>
                 <h1 className="text-3xl font-semibold text-white">{item.request_number}</h1>
               </div>
-              <span className="h-fit rounded-full bg-emerald-400/10 px-3 py-1 text-sm text-emerald-300">{item.status}</span>
+              <span className={`h-fit rounded-full px-3 py-1 text-sm ${statusColor(item.status)}`}>{item.status}</span>
             </div>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -105,6 +107,23 @@ export default function RequestDetail() {
               <div className="mt-4 rounded-xl bg-white/[.035] p-4">
                 <small className="text-slate-500">Observações do Técnico</small>
                 <p className="mt-1 text-sm text-white">{item.observations}</p>
+              </div>
+            )}
+
+            {item.produced_quantity != null && (
+              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-xl bg-white/[.035] p-4">
+                  <small className="text-slate-500">Quantidade Produzida</small>
+                  <p className="mt-1 text-sm font-medium text-white">{Number(item.produced_quantity).toLocaleString('pt-BR')} {item.unit}</p>
+                </div>
+                <div className="rounded-xl bg-white/[.035] p-4">
+                  <small className="text-slate-500">Data da Produção</small>
+                  <p className="mt-1 text-sm font-medium text-white">{item.production_date ? new Date(item.production_date + 'T00:00').toLocaleDateString('pt-BR') : '—'}</p>
+                </div>
+                <div className="rounded-xl bg-white/[.035] p-4">
+                  <small className="text-slate-500">Hora da Produção</small>
+                  <p className="mt-1 text-sm font-medium text-white">{item.production_time || '—'}</p>
+                </div>
               </div>
             )}
 
@@ -153,8 +172,8 @@ export default function RequestDetail() {
                 <ol className="space-y-3">
                   {item.history.filter((h) => h.date).map((h, i) => (
                     <li key={i} className="flex gap-3 text-xs">
-                      <span className="text-slate-600">{new Date(h.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
-                      <span className="text-slate-300">{h.label}{h.user ? ` · ${h.user}` : ''}</span>
+                      <span className="text-slate-600">{new Date(h.date).toLocaleDateString('pt-BR')} {new Date(h.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                      <span className="text-slate-300">{h.label}{h.user ? ` · ${h.user}` : ''}{h.detail ? ` — ${h.detail}` : ''}</span>
                     </li>
                   ))}
                 </ol>
