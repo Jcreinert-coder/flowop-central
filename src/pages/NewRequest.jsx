@@ -6,12 +6,14 @@ import SignaturePad from '@/components/production/SignaturePad';
 import Sidebar from '@/components/production/Sidebar';
 import ProductSelect from '@/components/production/ProductSelect';
 import { useRole } from '@/lib/RoleContext';
+import { useProducts } from '@/lib/useProducts';
 import { logAudit } from '@/lib/audit';
-import { AREAS, ETAPAS, PRODUTOS_POR_ETAPA, UNIDADE_POR_ETAPA, REASONS, UNITS, MILESTONES } from '@/lib/areas';
+import { AREAS, ETAPAS, UNIDADE_POR_ETAPA, REASONS, UNITS, MILESTONES } from '@/lib/areas';
 
 export default function NewRequest() {
   const nav = useNavigate();
   const { user, name, area, profile } = useRole();
+  const { productsByEtapa } = useProducts();
   const [busy, setBusy] = useState(false);
   const [sig, setSig] = useState('');
   const [form, setForm] = useState({
@@ -97,7 +99,7 @@ export default function NewRequest() {
               <label>
                 <span className="form-label">Produto *</span>
                 <ProductSelect
-                  products={form.etapa ? PRODUTOS_POR_ETAPA[form.etapa] || [] : []}
+                  products={form.etapa ? productsByEtapa[form.etapa] || [] : []}
                   value={form.product}
                   onChange={(p) => set('product', p)}
                   disabled={!form.etapa}

@@ -5,13 +5,15 @@ import { Link } from 'react-router-dom';
 import Sidebar from '@/components/production/Sidebar';
 import ProductSelect from '@/components/production/ProductSelect';
 import { useRole } from '@/lib/RoleContext';
+import { useProducts } from '@/lib/useProducts';
 import { logAudit } from '@/lib/audit';
-import { AREAS, ETAPAS, PRODUTOS_POR_ETAPA, UNIDADE_POR_ETAPA, REASONS, STATUS_COLORS } from '@/lib/areas';
+import { AREAS, ETAPAS, UNIDADE_POR_ETAPA, REASONS, STATUS_COLORS } from '@/lib/areas';
 
 const monthLabel = () => new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
 export default function Planejamento() {
   const { user, name, isAdmin } = useRole();
+  const { productsByEtapa } = useProducts();
   const [items, setItems] = useState([]);
   const [planned, setPlanned] = useState([]);
   const [busy, setBusy] = useState(false);
@@ -121,7 +123,7 @@ export default function Planejamento() {
               <label>
                 <span className="form-label">Produto *</span>
                 <ProductSelect
-                  products={draft.etapa ? PRODUTOS_POR_ETAPA[draft.etapa] || [] : []}
+                  products={draft.etapa ? productsByEtapa[draft.etapa] || [] : []}
                   value={draft.product}
                   onChange={(p) => set('product', p)}
                   disabled={!draft.etapa}

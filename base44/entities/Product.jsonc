@@ -1,0 +1,32 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nome do produto"
+    },
+    "code": {
+      "type": "string",
+      "description": "C\u00f3digo opcional do produto"
+    },
+    "etapa": {
+      "type": "string",
+      "enum": [
+        "Mistura Fina",
+        "Semiacabado",
+        "Produto Acabado"
+      ],
+      "description": "Etapa do processo produtivo"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Produto ativo para sele\u00e7\u00e3o nas solicita\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "name",
+    "etapa"
+  ]
+}
