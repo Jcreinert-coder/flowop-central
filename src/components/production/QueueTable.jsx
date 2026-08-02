@@ -6,6 +6,9 @@ const prioColors = { 'Urgente': 'bg-rose-100 text-rose-700', 'Normal': 'bg-slate
 
 const COLUMNS = ['Solicitação', 'Data', 'Hora', 'Área', 'Etapa', 'Técnico', 'Produto', 'Qtd.', 'Un.', 'Prioridade', 'Status', 'OP', 'Lote', 'Resp. Supply'];
 
+const statusBadge = 'inline-flex items-center justify-center whitespace-nowrap rounded-full px-2.5 py-1 text-center leading-none';
+const prioBadge = 'inline-flex items-center justify-center whitespace-nowrap rounded-full px-2 py-0.5 text-center leading-none';
+
 export default function QueueTable({ rows = [], compact = false, onDelete, canDelete = false }) {
   const cols = compact ? ['Status', 'Solicitante', 'Área', 'Produto', 'Quantidade', 'Prioridade', 'Hora', 'Solicitação', 'OP', 'Lote', ''] : COLUMNS;
 
@@ -30,12 +33,12 @@ export default function QueueTable({ rows = [], compact = false, onDelete, canDe
               <tr key={r.id} className={`border-b border-[#E5E7EB] text-[#374151] transition hover:bg-[#F7F7F8] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
                 {compact ? (
                   <>
-                    <td className="px-4 py-3"><span className={`rounded-full px-2.5 py-1 ${statusColor(r.status)}`}>{r.status}</span></td>
+                    <td className="px-4 py-3"><span className={`${statusBadge} ${statusColor(r.status)}`}>{r.status}</span></td>
                     <td className="px-4 text-[#1F2937]">{r.technician_name}</td>
                     <td className="px-4">{r.area}</td>
                     <td className="px-4">{r.product}</td>
                     <td className="px-4">{Number(r.quantity).toLocaleString('pt-BR')} {r.unit}</td>
-                    <td className="px-4"><span className={`rounded-full px-2 py-0.5 ${prioColors[r.priority]}`}>{r.priority}</span></td>
+                    <td className="px-4"><span className={`${prioBadge} ${prioColors[r.priority]}`}>{r.priority}</span></td>
                     <td className="px-4">{r.request_time}</td>
                     <td className="px-4 font-mono">{r.request_number}</td>
                     <td className="px-4 font-mono">{r.op_number || '—'}</td>
@@ -53,8 +56,8 @@ export default function QueueTable({ rows = [], compact = false, onDelete, canDe
                     <td className="px-4">{r.product}{r.product_code ? <span className="ml-1 text-[#9CA3AF]">#{r.product_code}</span> : ''}</td>
                     <td className="px-4">{Number(r.quantity).toLocaleString('pt-BR')}</td>
                     <td className="px-4">{r.unit}</td>
-                    <td className="px-4"><span className={`rounded-full px-2 py-0.5 ${prioColors[r.priority]}`}>{r.priority}</span></td>
-                    <td className="px-4"><span className={`rounded-full px-2.5 py-1 ${statusColor(r.status)}`}>{r.status}</span></td>
+                    <td className="px-4"><span className={`${prioBadge} ${prioColors[r.priority]}`}>{r.priority}</span></td>
+                    <td className="px-4"><span className={`${statusBadge} ${statusColor(r.status)}`}>{r.status}</span></td>
                     <td className="px-4 font-mono">{r.op_number || '—'}</td>
                     <td className="px-4 font-mono">{r.lot_number || '—'}</td>
                     <td className="px-4">{r.supply_responsible || '—'}</td>

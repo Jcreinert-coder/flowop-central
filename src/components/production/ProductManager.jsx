@@ -80,10 +80,16 @@ export default function ProductManager() {
         <button disabled={busy} className="flex h-[46px] items-center justify-center gap-2 rounded-xl bg-blue-600 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-60"><Plus size={17} />Adicionar</button>
       </form>
 
-      <div className="mt-5 overflow-x-auto">
-        <table className="w-full min-w-[700px] text-left text-xs">
-          <thead className="bg-[#F7F7F8] text-[#6B7280]">
-            <tr className="border-b border-[#E5E7EB]">{['Produto', 'Código', 'Etapa', 'Ativo', ''].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
+      <div className="mt-5 max-h-[420px] overflow-auto rounded-xl border border-[#E5E7EB]">
+        <table className="w-full text-left text-xs">
+          <thead className="sticky top-0 z-10 bg-[#F7F7F8] text-[#6B7280] shadow-[0_1px_0_#E5E7EB]">
+            <tr className="border-b border-[#E5E7EB]">
+              <th className="px-4 py-3 font-medium" style={{ width: '40%' }}>Produto</th>
+              <th className="px-4 py-3 font-medium" style={{ width: '20%' }}>Código</th>
+              <th className="px-4 py-3 font-medium" style={{ width: '18%' }}>Etapa</th>
+              <th className="px-4 py-3 font-medium" style={{ width: '12%' }}>Ativo</th>
+              <th className="px-4 py-3 font-medium text-right" style={{ width: '10%' }}></th>
+            </tr>
           </thead>
           <tbody>
             {loading && <tr><td colSpan={5} className="px-4 py-6 text-center text-[#9CA3AF]">Carregando...</td></tr>}
@@ -111,14 +117,14 @@ export default function ProductManager() {
                   </>
                 ) : (
                   <>
-                    <td className="px-4 py-3 text-[#1F2937]">{p.name}</td>
-                    <td className="px-4 font-mono text-[#9CA3AF]">{p.code || '—'}</td>
-                    <td className="px-4">{p.etapa}</td>
-                    <td className="px-4">
-                      <button onClick={() => toggleActive(p)} className={`rounded-full px-3 py-1 text-xs ${p.active !== false ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{p.active !== false ? 'Ativo' : 'Inativo'}</button>
+                    <td className="px-4 py-3 text-[#1F2937]"><span className="block truncate" title={p.name}>{p.name}</span></td>
+                    <td className="px-4 py-3 font-mono text-[#9CA3AF]">{p.code || '—'}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{p.etapa}</td>
+                    <td className="px-4 py-3">
+                      <button onClick={() => toggleActive(p)} className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-3 py-1 text-xs leading-none ${p.active !== false ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{p.active !== false ? 'Ativo' : 'Inativo'}</button>
                     </td>
-                    <td className="px-4">
-                      <div className="flex items-center gap-1">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-end gap-1">
                         <button onClick={() => startEdit(p)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-blue-50 hover:text-blue-600"><Pencil size={15} /></button>
                         <button onClick={() => remove(p)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-rose-50 hover:text-rose-600"><Trash2 size={15} /></button>
                       </div>
