@@ -22,31 +22,31 @@ export default function Sidebar() {
   const initials = name.split(' ').map((p) => p[0]).slice(0, 2).join('');
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-white/10 bg-[#0b1224]/95 px-4 py-6 backdrop-blur-xl lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-[#E5E7EB] bg-white px-4 py-6 lg:flex">
       <Link to="/" className="mb-8 flex items-center gap-3 px-3">
-        <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 shadow-[0_0_28px_rgba(139,92,246,.35)]">
+        <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-600 text-white shadow-sm">
           <Factory size={20} />
         </span>
         <span>
-          <b className="block text-white">CSOP</b>
-          <small className="text-slate-500">Central de OPs</small>
+          <b className="block text-[#1F2937]">CSOP</b>
+          <small className="text-[#9CA3AF]">Central de OPs</small>
         </span>
       </Link>
 
       <nav className="flex-1 space-y-1">
         {items.map(([label, Icon, to]) => (
-          <Link key={label} to={to} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${pathname === to ? 'bg-violet-500/15 text-violet-300' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
+          <Link key={label} to={to} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${pathname === to ? 'bg-emerald-50 text-emerald-700 font-medium' : 'text-[#6B7280] hover:bg-[#F7F7F8] hover:text-[#1F2937]'}`}>
             <Icon size={17} />{label}
           </Link>
         ))}
       </nav>
 
-      <div className="mt-4 rounded-2xl border border-white/10 bg-white/[.04] p-3">
+      <div className="mt-4 rounded-xl border border-[#E5E7EB] bg-[#F7F7F8] p-3">
         <div className="flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-violet-500/20 text-sm font-semibold text-violet-300">{initials}</span>
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-100 text-sm font-semibold text-emerald-700">{initials}</span>
           <span className="min-w-0 flex-1">
-            <b className="block truncate text-sm text-white">{name}</b>
-            <small className="text-xs text-slate-500">{roleLabel}{cargo ? ` · ${cargo}` : ''}</small>
+            <b className="block truncate text-sm text-[#1F2937]">{name}</b>
+            <small className="text-xs text-[#9CA3AF]">{roleLabel}{cargo ? ` · ${cargo}` : ''}</small>
           </span>
         </div>
       </div>

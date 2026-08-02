@@ -59,18 +59,18 @@ export default function NewRequest() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-slate-300">
+    <div className="min-h-screen bg-[#F7F7F8] text-[#374151]">
       <Sidebar />
       <main className="lg:ml-64">
         <div className="mx-auto max-w-4xl space-y-6 p-4 md:p-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-slate-400"><ArrowLeft size={16} />Voltar ao dashboard</Link>
+          <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Voltar ao dashboard</Link>
           <div className="glass p-5 md:p-8">
-            <p className="text-sm text-violet-300">Nova Solicitação</p>
-            <h1 className="mt-1 text-3xl font-semibold text-white">Solicitar Ordem de Produção</h1>
-            <div className="mt-3 grid gap-2 text-xs text-slate-500 sm:grid-cols-3">
-              <span>Nº: <b className="text-slate-300">Automático</b></span>
-              <span>Data: <b className="text-slate-300">{new Date().toLocaleDateString('pt-BR')}</b></span>
-              <span>Hora: <b className="text-slate-300">{new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</b></span>
+            <p className="text-sm text-emerald-600">Nova Solicitação</p>
+            <h1 className="mt-1 text-3xl font-semibold text-[#1F2937]">Solicitar Ordem de Produção</h1>
+            <div className="mt-3 grid gap-2 text-xs text-[#9CA3AF] sm:grid-cols-3">
+              <span>Nº: <b className="text-[#374151]">Automático</b></span>
+              <span>Data: <b className="text-[#374151]">{new Date().toLocaleDateString('pt-BR')}</b></span>
+              <span>Hora: <b className="text-[#374151]">{new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</b></span>
             </div>
 
             <form onSubmit={submit} className="mt-8 grid gap-5 md:grid-cols-2">
@@ -139,7 +139,7 @@ export default function NewRequest() {
                 <textarea value={form.observations} onChange={(e) => set('observations', e.target.value)} className="form-input min-h-20" />
               </label>
               <div className="md:col-span-2"><SignaturePad onChange={setSig} /></div>
-              <button disabled={busy} className="md:col-span-2 flex h-14 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 font-medium text-white hover:brightness-110 disabled:opacity-60">
+              <button disabled={busy} className="md:col-span-2 flex h-14 items-center justify-center gap-2 rounded-xl bg-emerald-600 font-medium text-white shadow-sm hover:bg-emerald-500 disabled:opacity-60">
                 <Send size={18} />{busy ? 'Enviando...' : 'Enviar Solicitação'}
               </button>
             </form>

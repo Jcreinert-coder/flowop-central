@@ -32,14 +32,14 @@ export default function Planejamento() {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-[#0F172A] text-slate-300">
+      <div className="min-h-screen bg-[#F7F7F8] text-[#374151]">
         <Sidebar />
         <main className="lg:ml-64">
           <div className="mx-auto max-w-3xl space-y-6 p-4 md:p-8">
-            <Link to="/" className="inline-flex items-center gap-2 text-sm text-slate-400"><ArrowLeft size={16} />Dashboard</Link>
+            <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Dashboard</Link>
             <div className="glass p-10 text-center">
-              <h1 className="text-xl font-semibold text-white">Acesso restrito</h1>
-              <p className="mt-2 text-sm text-slate-400">Apenas usuários Supply e Líderes podem realizar o planejamento mensal.</p>
+              <h1 className="text-xl font-semibold text-[#1F2937]">Acesso restrito</h1>
+              <p className="mt-2 text-sm text-[#6B7280]">Apenas usuários Supply e Líderes podem realizar o planejamento mensal.</p>
             </div>
           </div>
         </main>
@@ -92,15 +92,15 @@ export default function Planejamento() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-slate-300">
+    <div className="min-h-screen bg-[#F7F7F8] text-[#374151]">
       <Sidebar />
       <main className="lg:ml-64">
         <div className="mx-auto max-w-[1400px] space-y-6 p-4 md:p-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-slate-400"><ArrowLeft size={16} />Dashboard</Link>
+          <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Dashboard</Link>
           <div>
-            <p className="text-sm text-violet-300">Planejamento</p>
-            <h1 className="flex items-center gap-2 text-3xl font-semibold text-white"><CalendarDays size={24} />Planejamento Mensal</h1>
-            <p className="mt-1 text-xs text-slate-500">Cadastre as solicitações previstas para {monthLabel()} · status inicial: Planejada</p>
+            <p className="text-sm text-emerald-600">Planejamento</p>
+            <h1 className="flex items-center gap-2 text-3xl font-semibold text-[#1F2937]"><CalendarDays size={24} />Planejamento Mensal</h1>
+            <p className="mt-1 text-xs text-[#9CA3AF]">Cadastre as solicitações previstas para {monthLabel()} · status inicial: Planejada</p>
           </div>
 
           <form onSubmit={add} className="glass p-5">
@@ -154,7 +154,7 @@ export default function Planejamento() {
                 </select>
               </label>
               <div className="flex items-end">
-                <button type="submit" disabled={!canAdd} className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-white/5 text-sm text-white hover:bg-white/10 disabled:opacity-40"><Plus size={17} />Adicionar</button>
+                <button type="submit" disabled={!canAdd} className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#F7F7F8] text-sm text-[#1F2937] hover:bg-[#F0F0F1] disabled:opacity-40"><Plus size={17} />Adicionar</button>
               </div>
             </div>
           </form>
@@ -164,26 +164,26 @@ export default function Planejamento() {
               <div className="flex items-center justify-between p-5">
                 <div>
                   <h2 className="section-title">Itens do planejamento</h2>
-                  <p className="text-xs text-slate-500">{items.length} solicitação(ões) prontas para salvar</p>
+                  <p className="text-xs text-[#9CA3AF]">{items.length} solicitação(ões) prontas para salvar</p>
                 </div>
-                <button disabled={busy} onClick={saveAll} className="flex h-11 items-center gap-2 rounded-xl bg-violet-600 px-5 text-sm font-medium text-white hover:bg-violet-500 disabled:opacity-60"><Save size={17} />{busy ? 'Salvando...' : 'Salvar Planejamento'}</button>
+                <button disabled={busy} onClick={saveAll} className="flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-60"><Save size={17} />{busy ? 'Salvando...' : 'Salvar Planejamento'}</button>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[800px] text-left text-xs">
-                  <thead className="border-y border-white/5 bg-white/[.02] text-slate-500">
-                    <tr>{['Área', 'Etapa', 'Produto', 'Qtd.', 'Un.', 'Motivo', 'Prioridade', ''].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
+                  <thead className="bg-[#F7F7F8] text-[#6B7280]">
+                    <tr className="border-b border-[#E5E7EB]">{['Área', 'Etapa', 'Produto', 'Qtd.', 'Un.', 'Motivo', 'Prioridade', ''].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
                   </thead>
                   <tbody>
-                    {items.map((it) => (
-                      <tr key={it.id} className="border-b border-white/5 text-slate-300">
+                    {items.map((it, i) => (
+                      <tr key={it.id} className={`border-b border-[#E5E7EB] text-[#374151] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
                         <td className="px-4 py-3">{it.area}</td>
                         <td className="px-4">{it.etapa}</td>
-                        <td className="px-4 text-white">{it.product}</td>
+                        <td className="px-4 text-[#1F2937]">{it.product}</td>
                         <td className="px-4">{Number(it.quantity).toLocaleString('pt-BR')}</td>
                         <td className="px-4">{it.unit}</td>
                         <td className="px-4">{it.reason}</td>
                         <td className="px-4">{it.priority}</td>
-                        <td className="px-4"><button onClick={() => remove(it.id)} className="grid h-8 w-8 place-items-center rounded-lg bg-white/5 text-slate-400 hover:bg-rose-500/20 hover:text-rose-300"><Trash2 size={14} /></button></td>
+                        <td className="px-4"><button onClick={() => remove(it.id)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-rose-50 hover:text-rose-600"><Trash2 size={14} /></button></td>
                       </tr>
                     ))}
                   </tbody>
@@ -195,31 +195,31 @@ export default function Planejamento() {
           <section className="glass overflow-hidden">
             <div className="p-5">
               <h2 className="section-title">Solicitações planejadas · {monthLabel()}</h2>
-              <p className="text-xs text-slate-500">{planned.length} no aguardo de emissão de OP</p>
+              <p className="text-xs text-[#9CA3AF]">{planned.length} no aguardo de emissão de OP</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[800px] text-left text-xs">
-                <thead className="border-y border-white/5 bg-white/[.02] text-slate-500">
-                  <tr>{['Solicitação', 'Data', 'Área', 'Etapa', 'Produto', 'Qtd.', 'Prioridade', 'Status', ''].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
+                <thead className="bg-[#F7F7F8] text-[#6B7280]">
+                  <tr className="border-b border-[#E5E7EB]">{['Solicitação', 'Data', 'Área', 'Etapa', 'Produto', 'Qtd.', 'Prioridade', 'Status', ''].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
                 </thead>
                 <tbody>
-                  {planned.map((r) => (
-                    <tr key={r.id} className="border-b border-white/5 text-slate-300 hover:bg-white/[.025]">
-                      <td className="px-4 py-3 font-mono text-white">{r.request_number}</td>
+                  {planned.map((r, i) => (
+                    <tr key={r.id} className={`border-b border-[#E5E7EB] text-[#374151] transition hover:bg-[#F7F7F8] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
+                      <td className="px-4 py-3 font-mono text-[#1F2937]">{r.request_number}</td>
                       <td className="px-4">{r.request_date ? new Date(r.request_date + 'T00:00').toLocaleDateString('pt-BR') : '—'}</td>
                       <td className="px-4">{r.area}</td>
                       <td className="px-4">{r.etapa || '—'}</td>
-                      <td className="px-4 text-white">{r.product}</td>
+                      <td className="px-4 text-[#1F2937]">{r.product}</td>
                       <td className="px-4">{Number(r.quantity).toLocaleString('pt-BR')} {r.unit}</td>
                       <td className="px-4">{r.priority}</td>
                       <td className="px-4"><span className={`rounded-full px-2.5 py-1 ${STATUS_COLORS[r.status] || ''}`}>{r.status}</span></td>
-                      <td className="px-4"><Link to={`/solicitacoes/${r.id}`} className="text-violet-300 hover:underline">Abrir</Link></td>
+                      <td className="px-4"><Link to={`/solicitacoes/${r.id}`} className="text-emerald-600 hover:underline">Abrir</Link></td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            {planned.length === 0 && <p className="p-8 text-center text-sm text-slate-600">Nenhuma solicitação planejada ainda.</p>}
+            {planned.length === 0 && <p className="p-8 text-center text-sm text-[#9CA3AF]">Nenhuma solicitação planejada ainda.</p>}
           </section>
         </div>
       </main>

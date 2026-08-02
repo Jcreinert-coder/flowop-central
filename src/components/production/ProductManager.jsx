@@ -66,7 +66,7 @@ export default function ProductManager() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="flex items-center gap-2 section-title"><Plus size={16} />Cadastro de Produtos</h2>
-          <p className="mt-1 text-xs text-slate-500">Produtos disponíveis nas solicitações, organizados por etapa</p>
+          <p className="mt-1 text-xs text-[#9CA3AF]">Produtos disponíveis nas solicitações, organizados por etapa</p>
         </div>
       </div>
 
@@ -77,19 +77,19 @@ export default function ProductManager() {
           <option value="">Etapa *</option>
           {ETAPAS.map((t) => <option key={t}>{t}</option>)}
         </select>
-        <button disabled={busy} className="flex h-[46px] items-center justify-center gap-2 rounded-xl bg-violet-600 text-sm font-medium text-white hover:bg-violet-500 disabled:opacity-60"><Plus size={17} />Adicionar</button>
+        <button disabled={busy} className="flex h-[46px] items-center justify-center gap-2 rounded-xl bg-emerald-600 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-60"><Plus size={17} />Adicionar</button>
       </form>
 
       <div className="mt-5 overflow-x-auto">
         <table className="w-full min-w-[700px] text-left text-xs">
-          <thead className="border-y border-white/5 bg-white/[.02] text-slate-500">
-            <tr>{['Produto', 'Código', 'Etapa', 'Ativo', ''].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
+          <thead className="bg-[#F7F7F8] text-[#6B7280]">
+            <tr className="border-b border-[#E5E7EB]">{['Produto', 'Código', 'Etapa', 'Ativo', ''].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
           </thead>
           <tbody>
-            {loading && <tr><td colSpan={5} className="px-4 py-6 text-center text-slate-600">Carregando...</td></tr>}
-            {!loading && products.length === 0 && <tr><td colSpan={5} className="px-4 py-6 text-center text-slate-600">Nenhum produto cadastrado.</td></tr>}
-            {products.map((p) => (
-              <tr key={p.id} className="border-b border-white/5 text-slate-300">
+            {loading && <tr><td colSpan={5} className="px-4 py-6 text-center text-[#9CA3AF]">Carregando...</td></tr>}
+            {!loading && products.length === 0 && <tr><td colSpan={5} className="px-4 py-6 text-center text-[#9CA3AF]">Nenhum produto cadastrado.</td></tr>}
+            {products.map((p, i) => (
+              <tr key={p.id} className={`border-b border-[#E5E7EB] text-[#374151] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
                 {editing?.id === p.id ? (
                   <>
                     <td className="px-4 py-2"><input value={editing.name} onChange={(e) => setEditing({ ...editing, name: e.target.value })} className={inputCls} /></td>
@@ -100,27 +100,27 @@ export default function ProductManager() {
                       </select>
                     </td>
                     <td className="px-4 py-2">
-                      <button onClick={() => setEditing({ ...editing, active: !editing.active })} className={`rounded-full px-3 py-1 text-xs ${editing.active ? 'bg-emerald-400/10 text-emerald-300' : 'bg-slate-400/10 text-slate-400'}`}>{editing.active ? 'Ativo' : 'Inativo'}</button>
+                      <button onClick={() => setEditing({ ...editing, active: !editing.active })} className={`rounded-full px-3 py-1 text-xs ${editing.active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{editing.active ? 'Ativo' : 'Inativo'}</button>
                     </td>
                     <td className="px-4 py-2">
                       <div className="flex items-center gap-1">
-                        <button disabled={busy} onClick={saveEdit} className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25"><Check size={15} /></button>
-                        <button onClick={() => setEditing(null)} className="grid h-8 w-8 place-items-center rounded-lg bg-white/5 text-slate-400 hover:bg-white/10"><X size={15} /></button>
+                        <button disabled={busy} onClick={saveEdit} className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100"><Check size={15} /></button>
+                        <button onClick={() => setEditing(null)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-[#F0F0F1]"><X size={15} /></button>
                       </div>
                     </td>
                   </>
                 ) : (
                   <>
-                    <td className="px-4 py-3 text-white">{p.name}</td>
-                    <td className="px-4 font-mono text-slate-500">{p.code || '—'}</td>
+                    <td className="px-4 py-3 text-[#1F2937]">{p.name}</td>
+                    <td className="px-4 font-mono text-[#9CA3AF]">{p.code || '—'}</td>
                     <td className="px-4">{p.etapa}</td>
                     <td className="px-4">
-                      <button onClick={() => toggleActive(p)} className={`rounded-full px-3 py-1 text-xs ${p.active !== false ? 'bg-emerald-400/10 text-emerald-300' : 'bg-slate-400/10 text-slate-500'}`}>{p.active !== false ? 'Ativo' : 'Inativo'}</button>
+                      <button onClick={() => toggleActive(p)} className={`rounded-full px-3 py-1 text-xs ${p.active !== false ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{p.active !== false ? 'Ativo' : 'Inativo'}</button>
                     </td>
                     <td className="px-4">
                       <div className="flex items-center gap-1">
-                        <button onClick={() => startEdit(p)} className="grid h-8 w-8 place-items-center rounded-lg bg-white/5 text-slate-400 hover:bg-violet-500/20"><Pencil size={15} /></button>
-                        <button onClick={() => remove(p)} className="grid h-8 w-8 place-items-center rounded-lg bg-white/5 text-slate-400 hover:bg-rose-500/20 hover:text-rose-300"><Trash2 size={15} /></button>
+                        <button onClick={() => startEdit(p)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-emerald-50 hover:text-emerald-600"><Pencil size={15} /></button>
+                        <button onClick={() => remove(p)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-rose-50 hover:text-rose-600"><Trash2 size={15} /></button>
                       </div>
                     </td>
                   </>

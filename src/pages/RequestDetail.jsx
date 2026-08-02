@@ -27,12 +27,14 @@ export default function RequestDetail() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <div className="grid min-h-screen place-items-center bg-[#0F172A] text-violet-300">Carregando solicitação...</div>;
-  if (!item) return <div className="grid min-h-screen place-items-center bg-[#0F172A] text-white">Solicitação não encontrada.</div>;
+  if (loading) return <div className="grid min-h-screen place-items-center bg-[#F7F7F8] text-emerald-600">Carregando solicitação...</div>;
+  if (!item) return <div className="grid min-h-screen place-items-center bg-[#F7F7F8] text-[#1F2937]">Solicitação não encontrada.</div>;
 
   const details = [
     ['Número da Solicitação', item.request_number],
     ['Número da OP', item.op_number || 'Aguardando'],
+    ['Número do Lote', item.lot_number || 'Aguardando'],
+    ['Data da Emissão da OP', item.op_emission_date ? new Date(item.op_emission_date + 'T00:00').toLocaleDateString('pt-BR') : '—'],
     ['Data', item.request_date ? new Date(item.request_date + 'T00:00').toLocaleDateString('pt-BR') : '—'],
     ['Hora', item.request_time || '—'],
     ['Técnico Solicitante', item.technician_name],
@@ -69,60 +71,60 @@ export default function RequestDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-slate-300">
+    <div className="min-h-screen bg-[#F7F7F8] text-[#374151]">
       <Sidebar />
       <main className="lg:ml-64">
         <div className="mx-auto max-w-5xl space-y-6 p-4 md:p-8">
           <div className="flex items-center justify-between">
-            <Link to="/solicitacoes" className="inline-flex items-center gap-2 text-sm text-slate-400"><ArrowLeft size={16} />Voltar às solicitações</Link>
+            <Link to="/solicitacoes" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Voltar às solicitações</Link>
             {canDelete && (
-              <button onClick={() => setDelOpen(true)} className="flex h-10 items-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 text-sm text-rose-300 hover:bg-rose-500/20"><Trash2 size={16} />Excluir</button>
+              <button onClick={() => setDelOpen(true)} className="flex h-10 items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 text-sm text-rose-600 hover:bg-rose-100"><Trash2 size={16} />Excluir</button>
             )}
           </div>
           <div className="glass p-6 md:p-8">
-            <div className="flex justify-between border-b border-white/10 pb-6">
+            <div className="flex justify-between border-b border-[#E5E7EB] pb-6">
               <div>
-                <p className="text-sm text-violet-300">Detalhes da Solicitação</p>
-                <h1 className="text-3xl font-semibold text-white">{item.request_number}</h1>
+                <p className="text-sm text-emerald-600">Detalhes da Solicitação</p>
+                <h1 className="text-3xl font-semibold text-[#1F2937]">{item.request_number}</h1>
               </div>
               <span className={`h-fit rounded-full px-3 py-1 text-sm ${statusColor(item.status)}`}>{item.status}</span>
             </div>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {details.map(([l, v]) => (
-                <div key={l} className="rounded-xl bg-white/[.035] p-4">
-                  <small className="text-slate-500">{l}</small>
-                  <p className="mt-1 text-sm font-medium text-white">{v}</p>
+                <div key={l} className="rounded-xl bg-[#F7F7F8] p-4">
+                  <small className="text-[#9CA3AF]">{l}</small>
+                  <p className="mt-1 text-sm font-medium text-[#1F2937]">{v}</p>
                 </div>
               ))}
             </div>
 
             {item.reason && (
-              <div className="mt-4 rounded-xl bg-white/[.035] p-4">
-                <small className="text-slate-500">Motivo da Solicitação</small>
-                <p className="mt-1 text-sm text-white">{item.reason}</p>
+              <div className="mt-4 rounded-xl bg-[#F7F7F8] p-4">
+                <small className="text-[#9CA3AF]">Motivo da Solicitação</small>
+                <p className="mt-1 text-sm text-[#1F2937]">{item.reason}</p>
               </div>
             )}
             {item.observations && (
-              <div className="mt-4 rounded-xl bg-white/[.035] p-4">
-                <small className="text-slate-500">Observações do Técnico</small>
-                <p className="mt-1 text-sm text-white">{item.observations}</p>
+              <div className="mt-4 rounded-xl bg-[#F7F7F8] p-4">
+                <small className="text-[#9CA3AF]">Observações do Técnico</small>
+                <p className="mt-1 text-sm text-[#1F2937]">{item.observations}</p>
               </div>
             )}
 
             {item.produced_quantity != null && (
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-xl bg-white/[.035] p-4">
-                  <small className="text-slate-500">Quantidade Produzida</small>
-                  <p className="mt-1 text-sm font-medium text-white">{Number(item.produced_quantity).toLocaleString('pt-BR')} {item.unit}</p>
+                <div className="rounded-xl bg-[#F7F7F8] p-4">
+                  <small className="text-[#9CA3AF]">Quantidade Produzida</small>
+                  <p className="mt-1 text-sm font-medium text-[#1F2937]">{Number(item.produced_quantity).toLocaleString('pt-BR')} {item.unit}</p>
                 </div>
-                <div className="rounded-xl bg-white/[.035] p-4">
-                  <small className="text-slate-500">Data da Produção</small>
-                  <p className="mt-1 text-sm font-medium text-white">{item.production_date ? new Date(item.production_date + 'T00:00').toLocaleDateString('pt-BR') : '—'}</p>
+                <div className="rounded-xl bg-[#F7F7F8] p-4">
+                  <small className="text-[#9CA3AF]">Data da Produção</small>
+                  <p className="mt-1 text-sm font-medium text-[#1F2937]">{item.production_date ? new Date(item.production_date + 'T00:00').toLocaleDateString('pt-BR') : '—'}</p>
                 </div>
-                <div className="rounded-xl bg-white/[.035] p-4">
-                  <small className="text-slate-500">Hora da Produção</small>
-                  <p className="mt-1 text-sm font-medium text-white">{item.production_time || '—'}</p>
+                <div className="rounded-xl bg-[#F7F7F8] p-4">
+                  <small className="text-[#9CA3AF]">Hora da Produção</small>
+                  <p className="mt-1 text-sm font-medium text-[#1F2937]">{item.production_time || '—'}</p>
                 </div>
               </div>
             )}
@@ -131,7 +133,7 @@ export default function RequestDetail() {
               <StatusActions item={item} user={user} onUpdate={setItem} />
             ) : (
               <section className="glass mt-5 p-5">
-                <p className="text-sm text-slate-400">Você está acompanhando esta solicitação. Alterações de status são realizadas pelo Supply.</p>
+                <p className="text-sm text-[#6B7280]">Você está acompanhando esta solicitação. Alterações de status são realizadas pelo Supply.</p>
               </section>
             )}
 
@@ -139,9 +141,9 @@ export default function RequestDetail() {
               <section className="glass mt-5 p-5">
                 <h2 className="section-title">Observações do Supply</h2>
                 <textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="Adicionar observação para o técnico..." className="form-input mt-3 min-h-20" />
-                <button onClick={addNote} className="mt-3 flex h-10 items-center gap-2 rounded-xl bg-violet-600/80 px-4 text-sm text-white hover:bg-violet-600"><Send size={15} />Adicionar observação</button>
+                <button onClick={addNote} className="mt-3 flex h-10 items-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm text-white hover:bg-emerald-500"><Send size={15} />Adicionar observação</button>
                 {item.supply_notes && (
-                  <div className="mt-4 whitespace-pre-line rounded-xl bg-white/[.035] p-4 text-sm text-slate-300">{item.supply_notes}</div>
+                  <div className="mt-4 whitespace-pre-line rounded-xl bg-[#F7F7F8] p-4 text-sm text-[#374151]">{item.supply_notes}</div>
                 )}
               </section>
             )}
@@ -149,7 +151,7 @@ export default function RequestDetail() {
             {!canManage && item.supply_notes && (
               <section className="glass mt-5 p-5">
                 <h2 className="section-title">Observações do Supply</h2>
-                <div className="mt-3 whitespace-pre-line rounded-xl bg-white/[.035] p-4 text-sm text-slate-300">{item.supply_notes}</div>
+                <div className="mt-3 whitespace-pre-line rounded-xl bg-[#F7F7F8] p-4 text-sm text-[#374151]">{item.supply_notes}</div>
               </section>
             )}
 
@@ -157,32 +159,32 @@ export default function RequestDetail() {
             <div className="mt-5 grid gap-4 md:grid-cols-6">
               {timeline.map((t, i) => (
                 <div key={t}>
-                  <span className={`grid h-9 w-9 place-items-center rounded-full ${i < done ? 'bg-violet-600 text-white' : 'bg-white/5 text-slate-600'}`}>
+                  <span className={`grid h-9 w-9 place-items-center rounded-full ${i < done ? 'bg-emerald-600 text-white' : 'bg-[#F0F0F1] text-[#9CA3AF]'}`}>
                     {i < done ? <Check size={16} /> : <Clock3 size={15} />}
                   </span>
-                  <p className="mt-3 text-xs">{t}</p>
-                  <small className="text-[10px] text-slate-600">{i < done ? 'Concluído' : 'Pendente'}</small>
+                  <p className="mt-3 text-xs text-[#374151]">{t}</p>
+                  <small className="text-[10px] text-[#9CA3AF]">{i < done ? 'Concluído' : 'Pendente'}</small>
                 </div>
               ))}
             </div>
 
             {item.history?.some((h) => h.user && h.date) && (
-              <div className="mt-6 rounded-xl border border-white/10 bg-white/[.02] p-4">
-                <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-white"><FileText size={15} />Linha do tempo</h3>
+              <div className="mt-6 rounded-xl border border-[#E5E7EB] bg-[#FAFAFB] p-4">
+                <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#1F2937]"><FileText size={15} />Linha do tempo</h3>
                 <ol className="space-y-3">
                   {item.history.filter((h) => h.date).map((h, i) => (
                     <li key={i} className="flex gap-3 text-xs">
-                      <span className="text-slate-600">{new Date(h.date).toLocaleDateString('pt-BR')} {new Date(h.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
-                      <span className="text-slate-300">{h.label}{h.user ? ` · ${h.user}` : ''}{h.detail ? ` — ${h.detail}` : ''}</span>
+                      <span className="text-[#9CA3AF]">{new Date(h.date).toLocaleDateString('pt-BR')} {new Date(h.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                      <span className="text-[#374151]">{h.label}{h.user ? ` · ${h.user}` : ''}{h.detail ? ` — ${h.detail}` : ''}</span>
                     </li>
                   ))}
                 </ol>
               </div>
             )}
 
-            <div className="mt-8 border-t border-white/10 pt-6">
+            <div className="mt-8 border-t border-[#E5E7EB] pt-6">
               <h2 className="section-title">Assinatura Digital do Técnico</h2>
-              {item.signature ? <img src={item.signature} alt="Assinatura digital" className="mt-3 h-28 rounded-xl bg-white p-3" /> : <p className="mt-3 text-sm italic text-slate-600">Assinatura registrada eletronicamente</p>}
+              {item.signature ? <img src={item.signature} alt="Assinatura digital" className="mt-3 h-28 rounded-xl bg-white p-3 border border-[#E5E7EB]" /> : <p className="mt-3 text-sm italic text-[#9CA3AF]">Assinatura registrada eletronicamente</p>}
             </div>
           </div>
         </div>

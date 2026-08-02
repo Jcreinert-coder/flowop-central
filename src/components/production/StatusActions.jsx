@@ -23,6 +23,7 @@ function markMilestone(history, label, user, detail) {
 
 export default function StatusActions({ item, user, onUpdate, isDemo }) {
   const [op, setOp] = useState(item.op_number || '');
+  const [lote, setLote] = useState(item.lot_number || '');
   const [busy, setBusy] = useState(false);
   const [showOp, setShowOp] = useState(false);
   const [showApontar, setShowApontar] = useState(false);
@@ -45,9 +46,17 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
     if (!ns) return;
 
     if (item.status === 'Aguardando Emissão da OP') {
-      if (!op) { setShowOp(true); return; }
-      const history = markMilestone(item.history, 'OP emitida', user);
-      return save({ status: 'OP Emitida', op_number: op, supply_responsible: user?.full_name, supply_user_id: user?.id, history }, `OP emitida: ${op}`);
+      if (!op || !lote) { setShowOp(true); return; }
+      const history = markMilestone(item.history, 'OP emitida', user, `OP: ${op} · Lote: ${lote}`);
+      return save({
+        status: 'OP Emitida',
+        op_number: op,
+        lot_number: lote,
+        op_emission_date: new Date().toISOString().slice(0, 10),
+        supply_responsible: user?.full_name,
+        supply_user_id: user?.id,
+        history,
+      }, `OP emitida: ${op} · Lote: ${lote}`);
     }
 
     if (item.status === 'Em Produção') {
@@ -73,42 +82,52 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
       <section className="glass mt-5 p-5">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs text-slate-500">Atendimento · Supply</p>
+            <p className="text-xs text-[#9CA3AF]">Atendimento · Supply</p>
             <h2 className="section-title mt-1">Status Final</h2>
           </div>
-          <span className={`rounded-full px-3 py-1 text-sm ${item.status === 'Finalizada' ? 'bg-emerald-500/15 text-emerald-300' : 'bg-rose-500/15 text-rose-300'}`}>{item.status}</span>
+          <span className={`rounded-full px-3 py-1 text-sm ${item.status === 'Finalizada' ? 'bg-green-100 text-green-700' : 'bg-rose-100 text-rose-700'}`}>{item.status}</span>
         </div>
-        <p className={`mt-4 text-sm ${item.status === 'Finalizada' ? 'text-emerald-300' : 'text-rose-300'}`}>{item.status === 'Finalizada' ? 'Solicitação concluída ✔' : 'Solicitação cancelada.'}</p>
+        <p className={`mt-4 text-sm ${item.status === 'Finalizada' ? 'text-green-600' : 'text-rose-600'}`}>{item.status === 'Finalizada' ? 'Solicitação concluída ✔' : 'Solicitação cancelada.'}</p>
       </section>
     );
   }
+
+  const needsOpFields = item.status === 'Aguardando Emissão da OP';
 
   return (
     <>
       <section className="glass mt-5 p-5">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs text-slate-500">Atendimento · Supply</p>
+            <p className="text-xs text-[#9CA3AF]">Atendimento · Supply</p>
             <h2 className="section-title mt-1">Atualizar Status</h2>
           </div>
-          <span className="rounded-full bg-violet-500/15 px-3 py-1 text-sm text-violet-300">{item.status}</span>
+          <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm text-emerald-700">{item.status}</span>
         </div>
 
-        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
-          {showOp && (
-            <input autoFocus value={op} onChange={(e) => setOp(e.target.value)} placeholder="Nº da OP (ex: OP-025487)" className="form-input sm:max-w-xs" />
+        <div className="mt-5 space-y-3">
+          {(showOp || (needsOpFields && !item.op_number)) && (
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div>
+                <span className="form-label">Número da OP *</span>
+                <input autoFocus value={op} onChange={(e) => setOp(e.target.value)} placeholder="Nº da OP (ex: OP-025487)" className="form-input" />
+              </div>
+              <div>
+                <span className="form-label">Número do Lote *</span>
+                <input value={lote} onChange={(e) => setLote(e.target.value)} placeholder="Nº do Lote (ex: L-2024-001)" className="form-input" />
+              </div>
+            </div>
           )}
-          {item.status === 'Aguardando Emissão da OP' && !showOp && item.op_number && (
-            <input value={op} onChange={(e) => setOp(e.target.value)} placeholder="Nº da OP" className="form-input sm:max-w-xs" />
-          )}
-          <button disabled={busy} onClick={advance} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 font-medium text-white shadow-[0_0_24px_rgba(124,58,237,.25)] hover:brightness-110 disabled:opacity-60">
-            {Icon && <Icon size={17} />}{STATUS_LABELS[item.status] || 'Avançar'}
-          </button>
-          <button disabled={busy} onClick={cancelar} className="flex h-11 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-slate-300 hover:text-rose-300">
-            <Ban size={15} />Cancelar
-          </button>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <button disabled={busy} onClick={advance} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 font-medium text-white shadow-sm hover:bg-emerald-500 disabled:opacity-60">
+              {Icon && <Icon size={17} />}{STATUS_LABELS[item.status] || 'Avançar'}
+            </button>
+            <button disabled={busy} onClick={cancelar} className="flex h-11 items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-[#6B7280] hover:bg-[#F7F7F8] hover:text-rose-600">
+              <Ban size={15} />Cancelar
+            </button>
+          </div>
         </div>
-        {showOp && <p className="mt-2 text-xs text-amber-300">Informe o número da OP emitida no ERP Senior para continuar.</p>}
+        {showOp && <p className="mt-2 text-xs text-amber-600">Informe o número da OP e do Lote no ERP Senior para continuar.</p>}
       </section>
       <ApontarProducao open={showApontar} onClose={() => setShowApontar(false)} onConfirm={confirmApontar} unit={item.unit} />
     </>

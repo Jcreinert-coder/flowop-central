@@ -14,7 +14,7 @@ export default function Users() {
   const { user, isAdmin } = useRole();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState(null); // user object or {} for new
+  const [editing, setEditing] = useState(null);
   const [del, setDel] = useState(null);
   const [busy, setBusy] = useState(false);
 
@@ -29,14 +29,14 @@ export default function Users() {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-[#0F172A] text-slate-300">
+      <div className="min-h-screen bg-[#F7F7F8] text-[#374151]">
         <Sidebar />
         <main className="lg:ml-64">
           <div className="mx-auto max-w-3xl space-y-6 p-4 md:p-8">
-            <Link to="/" className="inline-flex items-center gap-2 text-sm text-slate-400"><ArrowLeft size={16} />Dashboard</Link>
+            <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Dashboard</Link>
             <div className="glass p-10 text-center">
-              <h1 className="text-xl font-semibold text-white">Acesso restrito</h1>
-              <p className="mt-2 text-sm text-slate-400">Apenas usuários Supply e Líderes podem administrar usuários.</p>
+              <h1 className="text-xl font-semibold text-[#1F2937]">Acesso restrito</h1>
+              <p className="mt-2 text-sm text-[#6B7280]">Apenas usuários Supply e Líderes podem administrar usuários.</p>
             </div>
           </div>
         </main>
@@ -87,42 +87,42 @@ export default function Users() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-slate-300">
+    <div className="min-h-screen bg-[#F7F7F8] text-[#374151]">
       <Sidebar />
       <main className="lg:ml-64">
         <div className="mx-auto max-w-[1400px] space-y-6 p-4 md:p-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-slate-400"><ArrowLeft size={16} />Dashboard</Link>
+          <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Dashboard</Link>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm text-violet-300">Administração</p>
-              <h1 className="flex items-center gap-2 text-3xl font-semibold text-white"><UsersRound size={24} />Usuários</h1>
-              <p className="mt-1 text-xs text-slate-500">{rows.length} usuários cadastrados</p>
+              <p className="text-sm text-emerald-600">Administração</p>
+              <h1 className="flex items-center gap-2 text-3xl font-semibold text-[#1F2937]"><UsersRound size={24} />Usuários</h1>
+              <p className="mt-1 text-xs text-[#9CA3AF]">{rows.length} usuários cadastrados</p>
             </div>
-            <button onClick={() => setEditing({ ...blank })} className="flex h-11 items-center gap-2 rounded-xl bg-violet-600 px-4 text-sm font-medium text-white hover:bg-violet-500"><PlusCircle size={17} />Novo Usuário</button>
+            <button onClick={() => setEditing({ ...blank })} className="flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-medium text-white hover:bg-emerald-500"><PlusCircle size={17} />Novo Usuário</button>
           </div>
 
           <section className="glass overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[960px] text-left text-xs">
-                <thead className="border-y border-white/5 bg-white/[.02] text-slate-500">
-                  <tr>{['Nome', 'Usuário (e-mail)', 'Cargo', 'Área', 'Perfil', 'Status', 'Último acesso', 'Ações'].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
+                <thead className="bg-[#F7F7F8] text-[#6B7280]">
+                  <tr className="border-b border-[#E5E7EB]">{['Nome', 'Usuário (e-mail)', 'Cargo', 'Área', 'Perfil', 'Status', 'Último acesso', 'Ações'].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
                 </thead>
                 <tbody>
-                  {rows.map((u) => (
-                    <tr key={u.id} className="border-b border-white/5 text-slate-300 hover:bg-white/[.025]">
-                      <td className="px-4 py-3 text-white">{u.full_name || '—'}</td>
+                  {rows.map((u, i) => (
+                    <tr key={u.id} className={`border-b border-[#E5E7EB] text-[#374151] transition hover:bg-[#F7F7F8] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
+                      <td className="px-4 py-3 text-[#1F2937]">{u.full_name || '—'}</td>
                       <td className="px-4">{u.email}</td>
                       <td className="px-4">{u.cargo || '—'}</td>
                       <td className="px-4">{u.area || '—'}</td>
                       <td className="px-4">{profileLabel(u.profile)}</td>
-                      <td className="px-4"><span className={`rounded-full px-2 py-0.5 ${u.status === 'Ativo' ? 'bg-emerald-400/10 text-emerald-300' : 'bg-slate-500/15 text-slate-400'}`}>{u.status || 'Ativo'}</span></td>
+                      <td className="px-4"><span className={`rounded-full px-2 py-0.5 ${u.status === 'Ativo' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{u.status || 'Ativo'}</span></td>
                       <td className="px-4">{u.updated_date ? new Date(u.updated_date).toLocaleDateString('pt-BR') : '—'}</td>
                       <td className="px-4">
                         <div className="flex items-center gap-1">
-                          <button onClick={() => setEditing(u)} title="Editar" className="grid h-8 w-8 place-items-center rounded-lg bg-white/5 hover:bg-violet-500/20"><Pencil size={14} /></button>
-                          <button onClick={() => reenviar(u)} title="Redefinir senha (reenviar convite)" className="grid h-8 w-8 place-items-center rounded-lg bg-white/5 hover:bg-sky-500/20"><KeyRound size={14} /></button>
-                          <button onClick={() => toggleStatus(u)} title={u.status === 'Ativo' ? 'Desativar' : 'Ativar'} className="grid h-8 w-8 place-items-center rounded-lg bg-white/5 hover:bg-amber-500/20">{u.status === 'Ativo' ? <UserX size={14} /> : <UserCheck size={14} />}</button>
-                          <button onClick={() => setDel(u)} title="Excluir" className="grid h-8 w-8 place-items-center rounded-lg bg-white/5 text-slate-400 hover:bg-rose-500/20 hover:text-rose-300"><Trash2 size={14} /></button>
+                          <button onClick={() => setEditing(u)} title="Editar" className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-emerald-50 hover:text-emerald-600"><Pencil size={14} /></button>
+                          <button onClick={() => reenviar(u)} title="Redefinir senha (reenviar convite)" className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-sky-50 hover:text-sky-600"><KeyRound size={14} /></button>
+                          <button onClick={() => toggleStatus(u)} title={u.status === 'Ativo' ? 'Desativar' : 'Ativar'} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-amber-50 hover:text-amber-600">{u.status === 'Ativo' ? <UserX size={14} /> : <UserCheck size={14} />}</button>
+                          <button onClick={() => setDel(u)} title="Excluir" className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-rose-50 hover:text-rose-600"><Trash2 size={14} /></button>
                         </div>
                       </td>
                     </tr>
@@ -130,8 +130,8 @@ export default function Users() {
                 </tbody>
               </table>
             </div>
-            {loading && <p className="p-6 text-center text-sm text-slate-500">Carregando usuários...</p>}
-            {!loading && rows.length === 0 && <p className="p-8 text-center text-sm text-slate-600">Nenhum usuário cadastrado.</p>}
+            {loading && <p className="p-6 text-center text-sm text-[#9CA3AF]">Carregando usuários...</p>}
+            {!loading && rows.length === 0 && <p className="p-8 text-center text-sm text-[#9CA3AF]">Nenhum usuário cadastrado.</p>}
           </section>
         </div>
       </main>
@@ -148,11 +148,11 @@ function UserForm({ initial, busy, onClose, onSave }) {
   const set = (k, v) => setF({ ...f, [k]: v, ...(k === 'profile' && v !== 'tecnico' ? { area: '' } : {}) });
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4 backdrop-blur-sm">
-      <div className="glass w-full max-w-lg p-6">
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-lg rounded-xl border border-[#E5E7EB] bg-white p-6 shadow-lg">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-white">{isNew ? 'Novo Usuário' : 'Editar Usuário'}</h2>
-          <button onClick={onClose} className="text-slate-500 hover:text-white"><X size={18} /></button>
+          <h2 className="text-lg font-semibold text-[#1F2937]">{isNew ? 'Novo Usuário' : 'Editar Usuário'}</h2>
+          <button onClick={onClose} className="text-[#9CA3AF] hover:text-[#1F2937]"><X size={18} /></button>
         </div>
         <form onSubmit={(e) => { e.preventDefault(); onSave(f); }} className="mt-5 grid gap-4 sm:grid-cols-2">
           <label className="sm:col-span-2">
@@ -191,10 +191,10 @@ function UserForm({ initial, busy, onClose, onSave }) {
               <option>Inativo</option>
             </select>
           </label>
-          {isNew && <p className="sm:col-span-2 text-xs text-slate-500">O sistema enviará um convite por e-mail para o usuário definir sua senha de acesso.</p>}
+          {isNew && <p className="sm:col-span-2 text-xs text-[#9CA3AF]">O sistema enviará um convite por e-mail para o usuário definir sua senha de acesso.</p>}
           <div className="sm:col-span-2 flex justify-end gap-2 pt-2">
-            <button type="button" onClick={onClose} className="h-10 rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-slate-300 hover:text-white">Cancelar</button>
-            <button disabled={busy} className="h-10 rounded-xl bg-violet-600 px-5 text-sm font-medium text-white hover:bg-violet-500 disabled:opacity-60">{busy ? 'Salvando...' : 'Salvar'}</button>
+            <button type="button" onClick={onClose} className="h-10 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-[#6B7280] hover:bg-[#F7F7F8]">Cancelar</button>
+            <button disabled={busy} className="h-10 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-60">{busy ? 'Salvando...' : 'Salvar'}</button>
           </div>
         </form>
       </div>

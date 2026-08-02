@@ -41,13 +41,13 @@ export const STATUS_LABELS = {
 };
 
 export const STATUS_COLORS = {
-  'Planejada': 'bg-slate-400/10 text-slate-300',
-  'Aguardando Emissão da OP': 'bg-amber-400/10 text-amber-300',
-  'OP Emitida': 'bg-emerald-400/10 text-emerald-300',
-  'Em Produção': 'bg-indigo-400/10 text-indigo-300',
-  'Apontada': 'bg-cyan-400/10 text-cyan-300',
-  'Finalizada': 'bg-green-400/10 text-green-300',
-  'Cancelada': 'bg-rose-400/10 text-rose-300',
+  'Planejada': 'bg-slate-100 text-slate-600',
+  'Aguardando Emissão da OP': 'bg-amber-100 text-amber-700',
+  'OP Emitida': 'bg-emerald-100 text-emerald-700',
+  'Em Produção': 'bg-indigo-100 text-indigo-700',
+  'Apontada': 'bg-cyan-100 text-cyan-700',
+  'Finalizada': 'bg-green-100 text-green-700',
+  'Cancelada': 'bg-rose-100 text-rose-700',
 };
 
 export const MILESTONES = ['Solicitação criada', 'Planejada', 'OP emitida', 'Em Produção', 'Produção apontada', 'Finalizada'];
@@ -65,4 +65,4 @@ export const nextStatus = (s) => {
   return i >= 0 && i < STATUS_FLOW.length - 1 ? STATUS_FLOW[i + 1] : null;
 };
 
-export const statusColor = (s) => STATUS_COLORS[s] || 'bg-slate-400/10 text-slate-300';
+export const statusColor = (s) => STATUS_COLORS[s] || 'bg-slate-100 text-slate-600';
