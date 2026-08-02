@@ -31,7 +31,7 @@ export default function ApontarProducao({ open, onClose, onConfirm, unit }) {
       <div className="w-full max-w-md rounded-xl border border-[#E5E7EB] bg-white p-6 shadow-lg">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-600"><ClipboardCheck size={20} /></span>
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-100 text-blue-600"><ClipboardCheck size={20} /></span>
             <div>
               <h2 className="text-lg font-semibold text-[#1F2937]">Apontar Produção</h2>
               <p className="mt-0.5 text-xs text-[#6B7280]">Registre a quantidade efetivamente produzida.</p>
@@ -61,7 +61,7 @@ export default function ApontarProducao({ open, onClose, onConfirm, unit }) {
 
         <div className="mt-6 flex justify-end gap-2">
           <button onClick={close} className="h-10 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-[#6B7280] hover:bg-[#F7F7F8]">Cancelar</button>
-          <button disabled={!qty || Number(qty) <= 0} onClick={confirm} className="h-10 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-50">Confirmar Apontamento</button>
+          <button disabled={!qty || Number(qty) <= 0} onClick={confirm} className="h-10 rounded-xl bg-blue-600 px-5 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-50">Confirmar Apontamento</button>
         </div>
       </div>
     </div>

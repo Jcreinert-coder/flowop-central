@@ -27,7 +27,7 @@ export default function RequestDetail() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <div className="grid min-h-screen place-items-center bg-[#F7F7F8] text-emerald-600">Carregando solicitação...</div>;
+  if (loading) return <div className="grid min-h-screen place-items-center bg-[#F7F7F8] text-blue-600">Carregando solicitação...</div>;
   if (!item) return <div className="grid min-h-screen place-items-center bg-[#F7F7F8] text-[#1F2937]">Solicitação não encontrada.</div>;
 
   const details = [
@@ -84,7 +84,7 @@ export default function RequestDetail() {
           <div className="glass p-6 md:p-8">
             <div className="flex justify-between border-b border-[#E5E7EB] pb-6">
               <div>
-                <p className="text-sm text-emerald-600">Detalhes da Solicitação</p>
+                <p className="text-sm text-blue-600">Detalhes da Solicitação</p>
                 <h1 className="text-3xl font-semibold text-[#1F2937]">{item.request_number}</h1>
               </div>
               <span className={`h-fit rounded-full px-3 py-1 text-sm ${statusColor(item.status)}`}>{item.status}</span>
@@ -141,7 +141,7 @@ export default function RequestDetail() {
               <section className="glass mt-5 p-5">
                 <h2 className="section-title">Observações do Supply</h2>
                 <textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="Adicionar observação para o técnico..." className="form-input mt-3 min-h-20" />
-                <button onClick={addNote} className="mt-3 flex h-10 items-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm text-white hover:bg-emerald-500"><Send size={15} />Adicionar observação</button>
+                <button onClick={addNote} className="mt-3 flex h-10 items-center gap-2 rounded-xl bg-blue-600 px-4 text-sm text-white hover:bg-blue-500"><Send size={15} />Adicionar observação</button>
                 {item.supply_notes && (
                   <div className="mt-4 whitespace-pre-line rounded-xl bg-[#F7F7F8] p-4 text-sm text-[#374151]">{item.supply_notes}</div>
                 )}
@@ -159,7 +159,7 @@ export default function RequestDetail() {
             <div className="mt-5 grid gap-4 md:grid-cols-6">
               {timeline.map((t, i) => (
                 <div key={t}>
-                  <span className={`grid h-9 w-9 place-items-center rounded-full ${i < done ? 'bg-emerald-600 text-white' : 'bg-[#F0F0F1] text-[#9CA3AF]'}`}>
+                  <span className={`grid h-9 w-9 place-items-center rounded-full ${i < done ? 'bg-blue-600 text-white' : 'bg-[#F0F0F1] text-[#9CA3AF]'}`}>
                     {i < done ? <Check size={16} /> : <Clock3 size={15} />}
                   </span>
                   <p className="mt-3 text-xs text-[#374151]">{t}</p>

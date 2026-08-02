@@ -17,7 +17,7 @@ export default function QueueTable({ rows = [], compact = false, onDelete, canDe
             <h2 className="section-title mb-1">Fila de Atendimento</h2>
             <p className="text-xs text-[#9CA3AF]">Acompanhamento em tempo real</p>
           </div>
-          <Link to="/solicitacoes" className="text-xs text-emerald-600 hover:underline">Ver todas</Link>
+          <Link to="/solicitacoes" className="text-xs text-blue-600 hover:underline">Ver todas</Link>
         </div>
       )}
       <div className="overflow-x-auto">
@@ -40,7 +40,7 @@ export default function QueueTable({ rows = [], compact = false, onDelete, canDe
                     <td className="px-4 font-mono">{r.request_number}</td>
                     <td className="px-4 font-mono">{r.op_number || '—'}</td>
                     <td className="px-4 font-mono">{r.lot_number || '—'}</td>
-                    <td className="px-4"><Link aria-label="Ver detalhes" to={`/solicitacoes/${r.id}`} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-emerald-50"><ArrowUpRight size={15} /></Link></td>
+                    <td className="px-4"><Link aria-label="Ver detalhes" to={`/solicitacoes/${r.id}`} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-blue-50"><ArrowUpRight size={15} /></Link></td>
                   </>
                 ) : (
                   <>
@@ -60,7 +60,7 @@ export default function QueueTable({ rows = [], compact = false, onDelete, canDe
                     <td className="px-4">{r.supply_responsible || '—'}</td>
                     <td className="px-4">
                       <div className="flex items-center gap-1">
-                        <Link aria-label="Ver detalhes" to={`/solicitacoes/${r.id}`} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-emerald-50"><ArrowUpRight size={15} /></Link>
+                        <Link aria-label="Ver detalhes" to={`/solicitacoes/${r.id}`} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-blue-50"><ArrowUpRight size={15} /></Link>
                         {canDelete && onDelete && (
                           <button aria-label="Excluir solicitação" onClick={() => onDelete(r)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-rose-50 hover:text-rose-600"><Trash2 size={15} /></button>
                         )}

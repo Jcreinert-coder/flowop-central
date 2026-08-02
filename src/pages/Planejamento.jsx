@@ -98,7 +98,7 @@ export default function Planejamento() {
         <div className="mx-auto max-w-[1400px] space-y-6 p-4 md:p-8">
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Dashboard</Link>
           <div>
-            <p className="text-sm text-emerald-600">Planejamento</p>
+            <p className="text-sm text-blue-600">Planejamento</p>
             <h1 className="flex items-center gap-2 text-3xl font-semibold text-[#1F2937]"><CalendarDays size={24} />Planejamento Mensal</h1>
             <p className="mt-1 text-xs text-[#9CA3AF]">Cadastre as solicitações previstas para {monthLabel()} · status inicial: Planejada</p>
           </div>
@@ -166,7 +166,7 @@ export default function Planejamento() {
                   <h2 className="section-title">Itens do planejamento</h2>
                   <p className="text-xs text-[#9CA3AF]">{items.length} solicitação(ões) prontas para salvar</p>
                 </div>
-                <button disabled={busy} onClick={saveAll} className="flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-60"><Save size={17} />{busy ? 'Salvando...' : 'Salvar Planejamento'}</button>
+                <button disabled={busy} onClick={saveAll} className="flex h-11 items-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-60"><Save size={17} />{busy ? 'Salvando...' : 'Salvar Planejamento'}</button>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[800px] text-left text-xs">
@@ -213,7 +213,7 @@ export default function Planejamento() {
                       <td className="px-4">{Number(r.quantity).toLocaleString('pt-BR')} {r.unit}</td>
                       <td className="px-4">{r.priority}</td>
                       <td className="px-4"><span className={`rounded-full px-2.5 py-1 ${STATUS_COLORS[r.status] || ''}`}>{r.status}</span></td>
-                      <td className="px-4"><Link to={`/solicitacoes/${r.id}`} className="text-emerald-600 hover:underline">Abrir</Link></td>
+                      <td className="px-4"><Link to={`/solicitacoes/${r.id}`} className="text-blue-600 hover:underline">Abrir</Link></td>
                     </tr>
                   ))}
                 </tbody>

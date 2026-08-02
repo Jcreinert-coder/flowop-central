@@ -94,11 +94,11 @@ export default function Users() {
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Dashboard</Link>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm text-emerald-600">Administração</p>
+              <p className="text-sm text-blue-600">Administração</p>
               <h1 className="flex items-center gap-2 text-3xl font-semibold text-[#1F2937]"><UsersRound size={24} />Usuários</h1>
               <p className="mt-1 text-xs text-[#9CA3AF]">{rows.length} usuários cadastrados</p>
             </div>
-            <button onClick={() => setEditing({ ...blank })} className="flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-medium text-white hover:bg-emerald-500"><PlusCircle size={17} />Novo Usuário</button>
+            <button onClick={() => setEditing({ ...blank })} className="flex h-11 items-center gap-2 rounded-xl bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500"><PlusCircle size={17} />Novo Usuário</button>
           </div>
 
           <section className="glass overflow-hidden">
@@ -115,11 +115,11 @@ export default function Users() {
                       <td className="px-4">{u.cargo || '—'}</td>
                       <td className="px-4">{u.area || '—'}</td>
                       <td className="px-4">{profileLabel(u.profile)}</td>
-                      <td className="px-4"><span className={`rounded-full px-2 py-0.5 ${u.status === 'Ativo' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{u.status || 'Ativo'}</span></td>
+                      <td className="px-4"><span className={`rounded-full px-2 py-0.5 ${u.status === 'Ativo' ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{u.status || 'Ativo'}</span></td>
                       <td className="px-4">{u.updated_date ? new Date(u.updated_date).toLocaleDateString('pt-BR') : '—'}</td>
                       <td className="px-4">
                         <div className="flex items-center gap-1">
-                          <button onClick={() => setEditing(u)} title="Editar" className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-emerald-50 hover:text-emerald-600"><Pencil size={14} /></button>
+                          <button onClick={() => setEditing(u)} title="Editar" className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-blue-50 hover:text-blue-600"><Pencil size={14} /></button>
                           <button onClick={() => reenviar(u)} title="Redefinir senha (reenviar convite)" className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-sky-50 hover:text-sky-600"><KeyRound size={14} /></button>
                           <button onClick={() => toggleStatus(u)} title={u.status === 'Ativo' ? 'Desativar' : 'Ativar'} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-amber-50 hover:text-amber-600">{u.status === 'Ativo' ? <UserX size={14} /> : <UserCheck size={14} />}</button>
                           <button onClick={() => setDel(u)} title="Excluir" className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-rose-50 hover:text-rose-600"><Trash2 size={14} /></button>
@@ -194,7 +194,7 @@ function UserForm({ initial, busy, onClose, onSave }) {
           {isNew && <p className="sm:col-span-2 text-xs text-[#9CA3AF]">O sistema enviará um convite por e-mail para o usuário definir sua senha de acesso.</p>}
           <div className="sm:col-span-2 flex justify-end gap-2 pt-2">
             <button type="button" onClick={onClose} className="h-10 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-[#6B7280] hover:bg-[#F7F7F8]">Cancelar</button>
-            <button disabled={busy} className="h-10 rounded-xl bg-emerald-600 px-5 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-60">{busy ? 'Salvando...' : 'Salvar'}</button>
+            <button disabled={busy} className="h-10 rounded-xl bg-blue-600 px-5 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-60">{busy ? 'Salvando...' : 'Salvar'}</button>
           </div>
         </form>
       </div>

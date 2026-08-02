@@ -85,9 +85,9 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
             <p className="text-xs text-[#9CA3AF]">Atendimento · Supply</p>
             <h2 className="section-title mt-1">Status Final</h2>
           </div>
-          <span className={`rounded-full px-3 py-1 text-sm ${item.status === 'Finalizada' ? 'bg-green-100 text-green-700' : 'bg-rose-100 text-rose-700'}`}>{item.status}</span>
+          <span className={`rounded-full px-3 py-1 text-sm ${item.status === 'Finalizada' ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700'}`}>{item.status}</span>
         </div>
-        <p className={`mt-4 text-sm ${item.status === 'Finalizada' ? 'text-green-600' : 'text-rose-600'}`}>{item.status === 'Finalizada' ? 'Solicitação concluída ✔' : 'Solicitação cancelada.'}</p>
+        <p className={`mt-4 text-sm ${item.status === 'Finalizada' ? 'text-blue-600' : 'text-rose-600'}`}>{item.status === 'Finalizada' ? 'Solicitação concluída ✔' : 'Solicitação cancelada.'}</p>
       </section>
     );
   }
@@ -102,7 +102,7 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
             <p className="text-xs text-[#9CA3AF]">Atendimento · Supply</p>
             <h2 className="section-title mt-1">Atualizar Status</h2>
           </div>
-          <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm text-emerald-700">{item.status}</span>
+          <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700">{item.status}</span>
         </div>
 
         <div className="mt-5 space-y-3">
@@ -119,7 +119,7 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
             </div>
           )}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <button disabled={busy} onClick={advance} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 font-medium text-white shadow-sm hover:bg-emerald-500 disabled:opacity-60">
+            <button disabled={busy} onClick={advance} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-blue-600 font-medium text-white shadow-sm hover:bg-blue-500 disabled:opacity-60">
               {Icon && <Icon size={17} />}{STATUS_LABELS[item.status] || 'Avançar'}
             </button>
             <button disabled={busy} onClick={cancelar} className="flex h-11 items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-[#6B7280] hover:bg-[#F7F7F8] hover:text-rose-600">

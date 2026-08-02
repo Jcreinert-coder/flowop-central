@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { ETAPAS } from '@/lib/areas';
 
-const palette = ['#10b981', '#0ea5e9', '#8b5cf6', '#f59e0b', '#ef4444', '#14b8a6'];
+const palette = ['#3b82f6', '#0ea5e9', '#8b5cf6', '#f59e0b', '#ef4444', '#2563eb'];
 
 const Tip = ({ active, payload, label }) =>
   active && payload?.length ? (
@@ -59,7 +59,7 @@ export default function ChartsGrid({ rows, profile, area }) {
               <XAxis dataKey="n" axisLine={false} tickLine={false} tick={{ fill: axisColor, fontSize: 12 }} />
               <YAxis axisLine={false} tickLine={false} tick={{ fill: axisColor, fontSize: 11 }} />
               <Tooltip content={<Tip />} />
-              <Bar dataKey="v" name="Solicitações" fill="#10b981" radius={[8, 8, 2, 2]} cursor={{ fill: '#10b9810a' }} />
+              <Bar dataKey="v" name="Solicitações" fill="#3b82f6" radius={[8, 8, 2, 2]} cursor={{ fill: '#3b82f60a' }} />
             </BarChart>
           </ResponsiveContainer>
         </div>

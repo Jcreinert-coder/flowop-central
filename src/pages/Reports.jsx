@@ -86,7 +86,7 @@ export default function Reports() {
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Dashboard</Link>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm text-emerald-600">Exportação</p>
+              <p className="text-sm text-blue-600">Exportação</p>
               <h1 className="flex items-center gap-2 text-3xl font-semibold text-[#1F2937]"><FileText size={24} />Relatórios</h1>
               <p className="mt-1 text-xs text-[#9CA3AF]">{filtered.length} registros no período selecionado</p>
             </div>
@@ -100,7 +100,7 @@ export default function Reports() {
                 <option value="semanal">Semanal</option>
                 <option value="mensal">Mensal</option>
               </select>
-              <button onClick={exportCSV} className="flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-4 text-sm font-medium text-white hover:bg-emerald-500"><Download size={16} />Excel (CSV)</button>
+              <button onClick={exportCSV} className="flex h-11 items-center gap-2 rounded-xl bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500"><Download size={16} />Excel (CSV)</button>
               <button onClick={exportPDF} className="flex h-11 items-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm font-medium text-[#374151] hover:bg-[#F7F7F8]"><Download size={16} />PDF</button>
             </div>
           </div>

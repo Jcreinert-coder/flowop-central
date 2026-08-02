@@ -43,10 +43,10 @@ export const STATUS_LABELS = {
 export const STATUS_COLORS = {
   'Planejada': 'bg-slate-100 text-slate-600',
   'Aguardando Emissão da OP': 'bg-amber-100 text-amber-700',
-  'OP Emitida': 'bg-emerald-100 text-emerald-700',
+  'OP Emitida': 'bg-blue-100 text-blue-700',
   'Em Produção': 'bg-indigo-100 text-indigo-700',
   'Apontada': 'bg-cyan-100 text-cyan-700',
-  'Finalizada': 'bg-green-100 text-green-700',
+  'Finalizada': 'bg-blue-100 text-blue-700',
   'Cancelada': 'bg-rose-100 text-rose-700',
 };
 

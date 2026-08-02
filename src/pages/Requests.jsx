@@ -86,7 +86,7 @@ export default function Requests() {
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Dashboard</Link>
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm text-emerald-600">Operação</p>
+              <p className="text-sm text-blue-600">Operação</p>
               <h1 className="text-3xl font-semibold text-[#1F2937]">Solicitações{prefilterLabel ? ` · ${prefilterLabel}` : ''}</h1>
               <p className="mt-1 text-xs text-[#9CA3AF]">{profile === 'tecnico' ? `Apenas área ${area}` : 'Todas as solicitações'} · {visible.length} registros</p>
             </div>

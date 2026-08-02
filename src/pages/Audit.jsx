@@ -20,7 +20,7 @@ export default function Audit() {
         <div className="mx-auto max-w-[1400px] space-y-6 p-4 md:p-8">
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Dashboard</Link>
           <div>
-            <p className="text-sm text-emerald-600">Governança</p>
+            <p className="text-sm text-blue-600">Governança</p>
             <h1 className="flex items-center gap-2 text-3xl font-semibold text-[#1F2937]"><ScrollText size={24} />Auditoria</h1>
             <p className="mt-1 text-xs text-[#9CA3AF]">Registro permanente de todas as ações · {rows.length} eventos</p>
           </div>

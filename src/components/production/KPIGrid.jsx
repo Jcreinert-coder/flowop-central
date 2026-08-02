@@ -20,11 +20,11 @@ export default function KPIGrid({ rows, profile, area }) {
 
   const cards = [
     { label: 'Solicitações Hoje', value: hoje.length, Icon: Inbox, color: '#0ea5e9', onClick: () => go('today') },
-    { label: 'OPs Criadas', value: ops.length, Icon: Wrench, color: '#10b981', onClick: () => go('ops') },
+    { label: 'OPs Criadas', value: ops.length, Icon: Wrench, color: '#3b82f6', onClick: () => go('ops') },
     { label: 'Pendentes', value: pendentes.length, Icon: Clock3, color: '#f59e0b', onClick: () => go('pendentes') },
     { label: 'Urgentes', value: urgentes.length, Icon: Siren, color: '#ef4444', onClick: () => go('urgentes') },
     { label: 'Produção Solicitada', value: qtdTotal.toLocaleString('pt-BR'), Icon: Package, color: '#6366f1', onClick: () => nav('/solicitacoes') },
-    { label: 'OPs Concluídas', value: concluidas.length, Icon: CheckCircle2, color: '#14b8a6', onClick: () => go('concluidas') },
+    { label: 'OPs Concluídas', value: concluidas.length, Icon: CheckCircle2, color: '#2563eb', onClick: () => go('concluidas') },
   ];
 
   const etapaCards = porEtapa.map((e) => ({

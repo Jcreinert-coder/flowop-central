@@ -77,7 +77,7 @@ export default function ProductManager() {
           <option value="">Etapa *</option>
           {ETAPAS.map((t) => <option key={t}>{t}</option>)}
         </select>
-        <button disabled={busy} className="flex h-[46px] items-center justify-center gap-2 rounded-xl bg-emerald-600 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-60"><Plus size={17} />Adicionar</button>
+        <button disabled={busy} className="flex h-[46px] items-center justify-center gap-2 rounded-xl bg-blue-600 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-60"><Plus size={17} />Adicionar</button>
       </form>
 
       <div className="mt-5 overflow-x-auto">
@@ -100,11 +100,11 @@ export default function ProductManager() {
                       </select>
                     </td>
                     <td className="px-4 py-2">
-                      <button onClick={() => setEditing({ ...editing, active: !editing.active })} className={`rounded-full px-3 py-1 text-xs ${editing.active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{editing.active ? 'Ativo' : 'Inativo'}</button>
+                      <button onClick={() => setEditing({ ...editing, active: !editing.active })} className={`rounded-full px-3 py-1 text-xs ${editing.active ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{editing.active ? 'Ativo' : 'Inativo'}</button>
                     </td>
                     <td className="px-4 py-2">
                       <div className="flex items-center gap-1">
-                        <button disabled={busy} onClick={saveEdit} className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100"><Check size={15} /></button>
+                        <button disabled={busy} onClick={saveEdit} className="grid h-8 w-8 place-items-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100"><Check size={15} /></button>
                         <button onClick={() => setEditing(null)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-[#F0F0F1]"><X size={15} /></button>
                       </div>
                     </td>
@@ -115,11 +115,11 @@ export default function ProductManager() {
                     <td className="px-4 font-mono text-[#9CA3AF]">{p.code || '—'}</td>
                     <td className="px-4">{p.etapa}</td>
                     <td className="px-4">
-                      <button onClick={() => toggleActive(p)} className={`rounded-full px-3 py-1 text-xs ${p.active !== false ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{p.active !== false ? 'Ativo' : 'Inativo'}</button>
+                      <button onClick={() => toggleActive(p)} className={`rounded-full px-3 py-1 text-xs ${p.active !== false ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{p.active !== false ? 'Ativo' : 'Inativo'}</button>
                     </td>
                     <td className="px-4">
                       <div className="flex items-center gap-1">
-                        <button onClick={() => startEdit(p)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-emerald-50 hover:text-emerald-600"><Pencil size={15} /></button>
+                        <button onClick={() => startEdit(p)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-blue-50 hover:text-blue-600"><Pencil size={15} /></button>
                         <button onClick={() => remove(p)} className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] text-[#6B7280] hover:bg-rose-50 hover:text-rose-600"><Trash2 size={15} /></button>
                       </div>
                     </td>

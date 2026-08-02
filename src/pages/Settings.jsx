@@ -40,7 +40,7 @@ export default function Settings() {
         <div className="mx-auto max-w-[1400px] space-y-6 p-4 md:p-8">
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1F2937]"><ArrowLeft size={16} />Dashboard</Link>
           <div>
-            <p className="text-sm text-emerald-600">Administração</p>
+            <p className="text-sm text-blue-600">Administração</p>
             <h1 className="flex items-center gap-2 text-3xl font-semibold text-[#1F2937]"><SettingsIcon size={24} />Configurações</h1>
             <p className="mt-1 text-xs text-[#9CA3AF]">Parâmetros e módulos administrativos do CSOP</p>
           </div>
@@ -48,7 +48,7 @@ export default function Settings() {
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {cards.map((c) => (
               <Link key={c.title} to={c.to} className="glass flex items-start gap-4 p-5 transition hover:-translate-y-0.5 hover:shadow-md">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-600"><c.icon size={20} /></span>
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-blue-100 text-blue-600"><c.icon size={20} /></span>
                 <div>
                   <h2 className="text-sm font-semibold text-[#1F2937]">{c.title}</h2>
                   <p className="mt-1 text-xs text-[#6B7280]">{c.desc}</p>
@@ -63,7 +63,7 @@ export default function Settings() {
               <ul className="mt-4 space-y-2">
                 {AREAS.map((a) => (
                   <li key={a} className="flex items-center gap-3 rounded-xl bg-[#F7F7F8] px-4 py-3 text-sm text-[#1F2937]">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500" />{a}
+                    <span className="h-2 w-2 rounded-full bg-blue-500" />{a}
                   </li>
                 ))}
               </ul>

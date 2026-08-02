@@ -43,7 +43,7 @@ export default function ProductSelect({ products = [], value, onChange, disabled
                 type="button"
                 key={p}
                 onClick={() => { onChange(p); setOpen(false); setQuery(''); }}
-                className={`block w-full px-4 py-2.5 text-left text-sm transition hover:bg-[#F7F7F8] ${value === p ? 'text-emerald-600' : 'text-[#374151]'}`}
+                className={`block w-full px-4 py-2.5 text-left text-sm transition hover:bg-[#F7F7F8] ${value === p ? 'text-blue-600' : 'text-[#374151]'}`}
               >
                 {p}
               </button>

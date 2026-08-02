@@ -36,11 +36,11 @@ export default function Dashboard() {
   const apontadas = scoped.filter((r) => r.status === 'Apontada' || r.status === 'Finalizada');
 
   const stats = [
-    { label: 'Total de Solicitações', value: total, Icon: Package, color: '#10b981' },
+    { label: 'Total de Solicitações', value: total, Icon: Package, color: '#3b82f6' },
     { label: 'Lotes Emitidos', value: lotes, Icon: Hash, color: '#0ea5e9' },
     { label: 'OPs Emitidas', value: opEmitidas.length, Icon: Clock, color: '#8b5cf6' },
     { label: 'OPs Apontadas', value: apontadas.length, Icon: Timer, color: '#f59e0b' },
-    { label: 'Qtd. Produzida', value: produzido.toLocaleString('pt-BR'), Icon: Package, color: '#14b8a6' },
+    { label: 'Qtd. Produzida', value: produzido.toLocaleString('pt-BR'), Icon: Package, color: '#2563eb' },
     { label: 'Tempo Médio Sol→OP', value: avgHours(scoped, 'created_date', 'op_emission_date'), Icon: Timer, color: '#ef4444' },
   ];
 
