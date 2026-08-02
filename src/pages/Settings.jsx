@@ -1,11 +1,10 @@
-import { ArrowLeft, FileText, Layers, Ruler, ScrollText, Settings as SettingsIcon, ShieldCheck, UsersRound } from 'lucide-react';
+import { ArrowLeft, FileText, ScrollText, Settings as SettingsIcon, ShieldCheck, UsersRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Sidebar from '@/components/production/Sidebar';
 import ProductManager from '@/components/production/ProductManager';
+import AreaManager from '@/components/production/AreaManager';
+import UnitManager from '@/components/production/UnitManager';
 import { useRole } from '@/lib/RoleContext';
-import { AREAS } from '@/lib/areas';
-
-const UNITS = ['kg', 'caixas', 'pacotes', 'unidades', 'litros'];
 
 export default function Settings() {
   const { isAdmin } = useRole();
@@ -58,22 +57,8 @@ export default function Settings() {
           </section>
 
           <div className="grid gap-4 lg:grid-cols-2">
-            <section className="glass p-5">
-              <h2 className="flex items-center gap-2 section-title"><Layers size={16} />Áreas de Produção</h2>
-              <ul className="mt-4 space-y-2">
-                {AREAS.map((a) => (
-                  <li key={a} className="flex items-center gap-3 rounded-xl bg-[#F7F7F8] px-4 py-3 text-sm text-[#1F2937]">
-                    <span className="h-2 w-2 rounded-full bg-blue-500" />{a}
-                  </li>
-                ))}
-              </ul>
-            </section>
-            <section className="glass p-5">
-              <h2 className="flex items-center gap-2 section-title"><Ruler size={16} />Unidades de Medida</h2>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {UNITS.map((u) => <span key={u} className="rounded-xl bg-[#F7F7F8] px-4 py-3 text-sm text-[#1F2937]">{u}</span>)}
-              </div>
-            </section>
+            <AreaManager />
+            <UnitManager />
           </div>
 
           <ProductManager />

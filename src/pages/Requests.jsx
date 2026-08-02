@@ -7,7 +7,8 @@ import QueueTable from '@/components/production/QueueTable';
 import DeleteDialog from '@/components/production/DeleteDialog';
 import { useRole } from '@/lib/RoleContext';
 import { logAudit } from '@/lib/audit';
-import { AREAS, STATUS_ALL } from '@/lib/areas';
+import { STATUS_ALL } from '@/lib/areas';
+import { useAreas } from '@/lib/useAreas';
 
 const todayStr = () => new Date().toISOString().slice(0, 10);
 
@@ -18,6 +19,7 @@ export default function Requests() {
   const [status, setStatus] = useState('');
   const [areaFilter, setAreaFilter] = useState('');
   const [target, setTarget] = useState(null);
+  const { names: areas } = useAreas();
   const [params] = useSearchParams();
   const prefilter = params.get('prefilter');
   const prefilterValue = params.get('value');
@@ -98,7 +100,7 @@ export default function Requests() {
               {profile !== 'tecnico' && (
                 <select value={areaFilter} onChange={(e) => setAreaFilter(e.target.value)} className="h-11 rounded-xl border border-[#E5E7EB] bg-white px-3 text-xs text-[#1F2937] shadow-sm outline-none">
                   <option value="">Todas as áreas</option>
-                  {AREAS.map((a) => <option key={a}>{a}</option>)}
+                  {areas.map((a) => <option key={a}>{a}</option>)}
                 </select>
               )}
               <select value={status} onChange={(e) => setStatus(e.target.value)} className="h-11 rounded-xl border border-[#E5E7EB] bg-white px-3 text-xs text-[#1F2937] shadow-sm outline-none">

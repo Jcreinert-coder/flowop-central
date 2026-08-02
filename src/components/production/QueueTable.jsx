@@ -23,9 +23,9 @@ export default function QueueTable({ rows = [], compact = false, onDelete, canDe
           <Link to="/solicitacoes" className="text-xs text-blue-600 hover:underline">Ver todas</Link>
         </div>
       )}
-      <div className="overflow-x-auto">
+      <div className={compact ? "overflow-auto" : "max-h-[600px] overflow-auto"}>
         <table className="w-full min-w-[1000px] text-left text-xs">
-          <thead className="bg-[#F7F7F8] text-[#6B7280]">
+          <thead className="sticky top-0 z-10 bg-[#F7F7F8] text-[#6B7280] shadow-[0_1px_0_#E5E7EB]">
             <tr className="border-b border-[#E5E7EB]">{cols.map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}{!compact && <th></th>}</tr>
           </thead>
           <tbody>

@@ -25,22 +25,30 @@ export default function Audit() {
             <p className="mt-1 text-xs text-[#9CA3AF]">Registro permanente de todas as ações · {rows.length} eventos</p>
           </div>
           <section className="glass overflow-hidden">
-            <div className="overflow-x-auto">
+            <div className="max-h-[600px] overflow-auto">
               <table className="w-full min-w-[960px] text-left text-xs">
-                <thead className="bg-[#F7F7F8] text-[#6B7280]">
-                  <tr className="border-b border-[#E5E7EB]">{['Data', 'Hora', 'Usuário', 'Ação', 'Solicitação', 'Afetado', 'Detalhes'].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
+                <thead className="sticky top-0 z-10 bg-[#F7F7F8] text-[#6B7280] shadow-[0_1px_0_#E5E7EB]">
+                  <tr className="border-b border-[#E5E7EB]">
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">Data</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">Hora</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">Usuário</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">Ação</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">Solicitação</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">Afetado</th>
+                    <th className="px-4 py-3 font-medium">Detalhes</th>
+                  </tr>
                 </thead>
                 <tbody>
                   {rows.map((r, i) => {
                     const d = new Date(r.created_date);
                     return (
                       <tr key={r.id} className={`border-b border-[#E5E7EB] text-[#374151] transition hover:bg-[#F7F7F8] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
-                        <td className="px-4 py-3">{d.toLocaleDateString('pt-BR')}</td>
-                        <td className="px-4">{d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</td>
-                        <td className="px-4 text-[#1F2937]">{r.user_name}</td>
-                        <td className="px-4">{r.action}</td>
-                        <td className="px-4 font-mono">{r.request_number || '—'}</td>
-                        <td className="px-4">{r.affected_user || '—'}</td>
+                        <td className="px-4 py-3 whitespace-nowrap">{d.toLocaleDateString('pt-BR')}</td>
+                        <td className="px-4 whitespace-nowrap">{d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</td>
+                        <td className="px-4 text-[#1F2937] whitespace-nowrap">{r.user_name}</td>
+                        <td className="px-4 whitespace-nowrap">{r.action}</td>
+                        <td className="px-4 font-mono whitespace-nowrap">{r.request_number || '—'}</td>
+                        <td className="px-4 whitespace-nowrap">{r.affected_user || '—'}</td>
                         <td className="px-4 text-[#6B7280]">{r.details || '—'}</td>
                       </tr>
                     );

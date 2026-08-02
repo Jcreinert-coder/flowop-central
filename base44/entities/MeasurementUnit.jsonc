@@ -1,0 +1,18 @@
+{
+  "name": "MeasurementUnit",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nome da unidade de medida"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Unidade ativa para sele\u00e7\u00e3o nas solicita\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

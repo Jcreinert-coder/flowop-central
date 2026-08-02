@@ -24,15 +24,7 @@
       "type": "string"
     },
     "area": {
-      "type": "string",
-      "enum": [
-        "Pasta",
-        "P\u00f3",
-        "Sach\u00ea",
-        "L\u00edquido",
-        "Mistura Fina",
-        "Envase Especiais"
-      ]
+      "type": "string"
     },
     "etapa": {
       "type": "string",
@@ -53,14 +45,7 @@
       "type": "number"
     },
     "unit": {
-      "type": "string",
-      "enum": [
-        "kg",
-        "caixas",
-        "pacotes",
-        "unidades",
-        "litros"
-      ]
+      "type": "string"
     },
     "reason": {
       "type": "string",

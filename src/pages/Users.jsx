@@ -6,7 +6,8 @@ import Sidebar from '@/components/production/Sidebar';
 import DeleteDialog from '@/components/production/DeleteDialog';
 import { useRole } from '@/lib/RoleContext';
 import { logAudit } from '@/lib/audit';
-import { AREAS, PROFILES, profileLabel, roleForInvite } from '@/lib/areas';
+import { PROFILES, profileLabel, roleForInvite } from '@/lib/areas';
+import { useAreas } from '@/lib/useAreas';
 
 const blank = { full_name: '', email: '', cargo: '', area: '', profile: 'tecnico', status: 'Ativo' };
 
@@ -17,6 +18,7 @@ export default function Users() {
   const [editing, setEditing] = useState(null);
   const [del, setDel] = useState(null);
   const [busy, setBusy] = useState(false);
+  const { names: areas } = useAreas();
 
   const load = () => {
     setLoading(true);
@@ -102,21 +104,21 @@ export default function Users() {
           </div>
 
           <section className="glass overflow-hidden">
-            <div className="overflow-x-auto">
+            <div className="max-h-[600px] overflow-auto">
               <table className="w-full min-w-[960px] text-left text-xs">
-                <thead className="bg-[#F7F7F8] text-[#6B7280]">
+                <thead className="sticky top-0 z-10 bg-[#F7F7F8] text-[#6B7280] shadow-[0_1px_0_#E5E7EB]">
                   <tr className="border-b border-[#E5E7EB]">{['Nome', 'Usuário (e-mail)', 'Cargo', 'Área', 'Perfil', 'Status', 'Último acesso', 'Ações'].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
                 </thead>
                 <tbody>
                   {rows.map((u, i) => (
                     <tr key={u.id} className={`border-b border-[#E5E7EB] text-[#374151] transition hover:bg-[#F7F7F8] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
-                      <td className="px-4 py-3 text-[#1F2937]">{u.full_name || '—'}</td>
-                      <td className="px-4">{u.email}</td>
-                      <td className="px-4">{u.cargo || '—'}</td>
-                      <td className="px-4">{u.area || '—'}</td>
-                      <td className="px-4">{profileLabel(u.profile)}</td>
-                      <td className="px-4"><span className={`rounded-full px-2 py-0.5 ${u.status === 'Ativo' ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{u.status || 'Ativo'}</span></td>
-                      <td className="px-4">{u.updated_date ? new Date(u.updated_date).toLocaleDateString('pt-BR') : '—'}</td>
+                      <td className="px-4 py-3 text-[#1F2937] whitespace-nowrap">{u.full_name || '—'}</td>
+                      <td className="px-4 whitespace-nowrap">{u.email}</td>
+                      <td className="px-4 whitespace-nowrap">{u.cargo || '—'}</td>
+                      <td className="px-4 whitespace-nowrap">{u.area || '—'}</td>
+                      <td className="px-4 whitespace-nowrap">{profileLabel(u.profile)}</td>
+                      <td className="px-4 whitespace-nowrap"><span className={`inline-flex items-center justify-center whitespace-nowrap rounded-full px-2 py-0.5 leading-none ${u.status === 'Ativo' ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{u.status || 'Ativo'}</span></td>
+                      <td className="px-4 whitespace-nowrap">{u.updated_date ? new Date(u.updated_date).toLocaleDateString('pt-BR') : '—'}</td>
                       <td className="px-4">
                         <div className="flex items-center gap-1">
                           <button onClick={() => setEditing(u)} title="Editar" className="grid h-8 w-8 place-items-center rounded-lg bg-[#F7F7F8] hover:bg-blue-50 hover:text-blue-600"><Pencil size={14} /></button>
@@ -136,13 +138,13 @@ export default function Users() {
         </div>
       </main>
 
-      {editing && <UserForm initial={editing} busy={busy} onClose={() => setEditing(null)} onSave={save} />}
+      {editing && <UserForm initial={editing} busy={busy} areas={areas} onClose={() => setEditing(null)} onSave={save} />}
       <DeleteDialog open={!!del} onClose={() => setDel(null)} onConfirm={confirmDelete} title="Excluir usuário" description={del ? `${del.full_name} · ${del.email}` : ''} />
     </div>
   );
 }
 
-function UserForm({ initial, busy, onClose, onSave }) {
+function UserForm({ initial, busy, areas, onClose, onSave }) {
   const [f, setF] = useState({ full_name: initial.full_name || '', email: initial.email || '', cargo: initial.cargo || '', area: initial.area || '', profile: initial.profile || 'tecnico', status: initial.status || 'Ativo' });
   const isNew = !initial.id;
   const set = (k, v) => setF({ ...f, [k]: v, ...(k === 'profile' && v !== 'tecnico' ? { area: '' } : {}) });
@@ -172,7 +174,7 @@ function UserForm({ initial, busy, onClose, onSave }) {
             {f.profile === 'tecnico' ? (
               <select required value={f.area} onChange={(e) => set('area', e.target.value)} className="form-input">
                 <option value="">Selecione...</option>
-                {AREAS.map((a) => <option key={a}>{a}</option>)}
+                {areas.map((a) => <option key={a}>{a}</option>)}
               </select>
             ) : (
               <input readOnly value="Não aplicável ao perfil" className="form-input opacity-50" />

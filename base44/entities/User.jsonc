@@ -21,14 +21,6 @@
     },
     "area": {
       "type": "string",
-      "enum": [
-        "Pasta",
-        "P\u00f3",
-        "Sach\u00ea",
-        "L\u00edquido",
-        "Mistura Fina",
-        "Envase Especiais"
-      ],
       "description": "\u00c1rea de produ\u00e7\u00e3o vinculada ao usu\u00e1rio (apenas t\u00e9cnicos)"
     },
     "cargo": {

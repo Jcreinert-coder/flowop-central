@@ -8,12 +8,16 @@ import ProductSelect from '@/components/production/ProductSelect';
 import { useRole } from '@/lib/RoleContext';
 import { useProducts } from '@/lib/useProducts';
 import { logAudit } from '@/lib/audit';
-import { AREAS, ETAPAS, UNIDADE_POR_ETAPA, REASONS, UNITS, MILESTONES } from '@/lib/areas';
+import { ETAPAS, UNIDADE_POR_ETAPA, REASONS, MILESTONES } from '@/lib/areas';
+import { useAreas } from '@/lib/useAreas';
+import { useUnits } from '@/lib/useUnits';
 
 export default function NewRequest() {
   const nav = useNavigate();
   const { user, name, area, profile } = useRole();
   const { productsByEtapa } = useProducts();
+  const { names: areas } = useAreas();
+  const { names: unitOptions } = useUnits();
   const [busy, setBusy] = useState(false);
   const [sig, setSig] = useState('');
   const [form, setForm] = useState({
@@ -85,7 +89,7 @@ export default function NewRequest() {
                 ) : (
                   <select required value={form.area} onChange={(e) => set('area', e.target.value)} className="form-input">
                     <option value="">Selecione...</option>
-                    {AREAS.map((a) => <option key={a}>{a}</option>)}
+                    {areas.map((a) => <option key={a}>{a}</option>)}
                   </select>
                 )}
               </label>
@@ -117,7 +121,7 @@ export default function NewRequest() {
               <label>
                 <span className="form-label">Unidade de Medida</span>
                 <select value={form.unit} onChange={(e) => set('unit', e.target.value)} className="form-input">
-                  {UNITS.map((u) => <option key={u}>{u}</option>)}
+                  {unitOptions.map((u) => <option key={u}>{u}</option>)}
                 </select>
               </label>
               <label>

@@ -7,13 +7,17 @@ import ProductSelect from '@/components/production/ProductSelect';
 import { useRole } from '@/lib/RoleContext';
 import { useProducts } from '@/lib/useProducts';
 import { logAudit } from '@/lib/audit';
-import { AREAS, ETAPAS, UNIDADE_POR_ETAPA, REASONS, STATUS_COLORS } from '@/lib/areas';
+import { ETAPAS, UNIDADE_POR_ETAPA, REASONS, STATUS_COLORS } from '@/lib/areas';
+import { useAreas } from '@/lib/useAreas';
+import { useUnits } from '@/lib/useUnits';
 
 const monthLabel = () => new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
 export default function Planejamento() {
   const { user, name, isAdmin } = useRole();
   const { productsByEtapa } = useProducts();
+  const { names: areas } = useAreas();
+  const { names: unitOptions } = useUnits();
   const [items, setItems] = useState([]);
   const [planned, setPlanned] = useState([]);
   const [busy, setBusy] = useState(false);
@@ -110,7 +114,7 @@ export default function Planejamento() {
                 <span className="form-label">Área de Produção *</span>
                 <select required value={draft.area} onChange={(e) => set('area', e.target.value)} className="form-input">
                   <option value="">Selecione...</option>
-                  {AREAS.map((a) => <option key={a}>{a}</option>)}
+                  {areas.map((a) => <option key={a}>{a}</option>)}
                 </select>
               </label>
               <label>
@@ -137,7 +141,7 @@ export default function Planejamento() {
               <label>
                 <span className="form-label">Unidade</span>
                 <select value={draft.unit} onChange={(e) => set('unit', e.target.value)} className="form-input">
-                  {['kg', 'caixas', 'pacotes', 'unidades', 'litros'].map((u) => <option key={u}>{u}</option>)}
+                  {unitOptions.map((u) => <option key={u}>{u}</option>)}
                 </select>
               </label>
               <label>
@@ -168,9 +172,9 @@ export default function Planejamento() {
                 </div>
                 <button disabled={busy} onClick={saveAll} className="flex h-11 items-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-medium text-white hover:bg-blue-500 disabled:opacity-60"><Save size={17} />{busy ? 'Salvando...' : 'Salvar Planejamento'}</button>
               </div>
-              <div className="overflow-x-auto">
+              <div className="max-h-[500px] overflow-auto">
                 <table className="w-full min-w-[800px] text-left text-xs">
-                  <thead className="bg-[#F7F7F8] text-[#6B7280]">
+                  <thead className="sticky top-0 z-10 bg-[#F7F7F8] text-[#6B7280] shadow-[0_1px_0_#E5E7EB]">
                     <tr className="border-b border-[#E5E7EB]">{['Área', 'Etapa', 'Produto', 'Qtd.', 'Un.', 'Motivo', 'Prioridade', ''].map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
                   </thead>
                   <tbody>

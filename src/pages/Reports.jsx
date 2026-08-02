@@ -105,25 +105,25 @@ export default function Reports() {
             </div>
           </div>
           <section className="glass overflow-hidden">
-            <div className="overflow-x-auto">
+            <div className="max-h-[600px] overflow-auto">
               <table className="w-full min-w-[1100px] text-left text-xs">
-                <thead className="bg-[#F7F7F8] text-[#6B7280]">
-                  <tr className="border-b border-[#E5E7EB]">{HEADERS.map((h) => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr>
+                <thead className="sticky top-0 z-10 bg-[#F7F7F8] text-[#6B7280] shadow-[0_1px_0_#E5E7EB]">
+                  <tr className="border-b border-[#E5E7EB]">{HEADERS.map((h) => <th key={h} className="px-4 py-3 font-medium whitespace-nowrap">{h}</th>)}</tr>
                 </thead>
                 <tbody>
                   {filtered.map((r, i) => (
                     <tr key={r.id} className={`border-b border-[#E5E7EB] text-[#374151] transition hover:bg-[#F7F7F8] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
-                      <td className="px-4 py-3 font-mono text-[#1F2937]">{r.request_number}</td>
-                      <td className="px-4 font-mono">{r.op_number || '—'}</td>
-                      <td className="px-4 font-mono">{r.lot_number || '—'}</td>
+                      <td className="px-4 py-3 font-mono text-[#1F2937] whitespace-nowrap">{r.request_number}</td>
+                      <td className="px-4 font-mono whitespace-nowrap">{r.op_number || '—'}</td>
+                      <td className="px-4 font-mono whitespace-nowrap">{r.lot_number || '—'}</td>
                       <td className="px-4 text-[#1F2937]">{r.product}</td>
-                      <td className="px-4">{r.etapa || '—'}</td>
-                      <td className="px-4">{r.area}</td>
-                      <td className="px-4">{Number(r.quantity).toLocaleString('pt-BR')}</td>
-                      <td className="px-4">{r.unit}</td>
-                      <td className="px-4">{r.status}</td>
-                      <td className="px-4">{r.supply_responsible || '—'}</td>
-                      <td className="px-4">{r.op_emission_date ? new Date(r.op_emission_date + 'T00:00').toLocaleDateString('pt-BR') : '—'}</td>
+                      <td className="px-4 whitespace-nowrap">{r.etapa || '—'}</td>
+                      <td className="px-4 whitespace-nowrap">{r.area}</td>
+                      <td className="px-4 whitespace-nowrap">{Number(r.quantity).toLocaleString('pt-BR')}</td>
+                      <td className="px-4 whitespace-nowrap">{r.unit}</td>
+                      <td className="px-4 whitespace-nowrap">{r.status}</td>
+                      <td className="px-4 whitespace-nowrap">{r.supply_responsible || '—'}</td>
+                      <td className="px-4 whitespace-nowrap">{r.op_emission_date ? new Date(r.op_emission_date + 'T00:00').toLocaleDateString('pt-BR') : '—'}</td>
                     </tr>
                   ))}
                 </tbody>
