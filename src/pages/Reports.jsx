@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { ArrowLeft, Download, FileText, Search } from 'lucide-react';
+import { ArrowLeft, Check, ChevronDown, Download, FileText, Filter, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Sidebar from '@/components/production/Sidebar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 const HEADERS = ['Solicitação', 'OP', 'Lote', 'Produto', 'Etapa', 'Área', 'Quantidade', 'Unidade', 'Status', 'Resp. Supply', 'Data Emissão OP'];
+
+const STATUS_OPTIONS = ['Planejada', 'Aguardando Emissão da OP', 'OP Emitida', 'Em Produção', 'Apontada', 'Finalizada', 'Cancelada'];
 
 function toCSV(rows) {
   const lines = [HEADERS.join(';')];
@@ -30,6 +33,8 @@ export default function Reports() {
   const [rows, setRows] = useState([]);
   const [periodo, setPeriodo] = useState('diario');
   const [q, setQ] = useState('');
+  const [statusSel, setStatusSel] = useState([]);
+  const [statusOpen, setStatusOpen] = useState(false);
 
   useEffect(() => {
     base44.entities.ProductionRequest.list('-created_date', 500)
@@ -53,13 +58,17 @@ export default function Reports() {
 
   const filtered = useMemo(() => {
     const t = q.trim().toLowerCase();
-    if (!t) return byPeriod;
-    return byPeriod.filter((r) =>
-      [r.request_number, r.op_number, r.lot_number, r.product, r.product_code]
+    return byPeriod.filter((r) => {
+      const matchQ = !t || [r.request_number, r.op_number, r.lot_number, r.product, r.product_code]
         .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(t))
-    );
-  }, [byPeriod, q]);
+        .some((v) => String(v).toLowerCase().includes(t));
+      const matchStatus = statusSel.length === 0 || statusSel.includes(r.status);
+      return matchQ && matchStatus;
+    });
+  }, [byPeriod, q, statusSel]);
+
+  const toggleStatus = (s) =>
+    setStatusSel((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
 
   const exportCSV = () => download(`relatorio-csop-${periodo}.csv`, toCSV(filtered), 'text/csv;charset=utf-8;');
   const exportPDF = () => {
@@ -100,6 +109,31 @@ export default function Reports() {
                 <option value="semanal">Semanal</option>
                 <option value="mensal">Mensal</option>
               </select>
+              <Popover open={statusOpen} onOpenChange={setStatusOpen}>
+                <PopoverTrigger asChild>
+                  <button type="button" className="flex h-11 items-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-3 text-xs font-medium text-[#1F2937] shadow-sm outline-none hover:bg-[#F7F7F8]">
+                    <Filter size={16} className="text-[#9CA3AF]" />
+                    Status
+                    {statusSel.length > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-blue-600 px-1 text-[10px] font-semibold text-white">{statusSel.length}</span>}
+                    <ChevronDown size={14} className="text-[#9CA3AF]" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64 p-2" align="end">
+                  <div className="space-y-0.5">
+                    <button type="button" onClick={() => setStatusSel([])} className={`flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-xs transition hover:bg-[#F7F7F8] ${statusSel.length === 0 ? 'font-medium text-blue-700' : 'text-[#374151]'}`}>
+                      Todos
+                      {statusSel.length === 0 && <Check size={14} className="text-blue-600" />}
+                    </button>
+                    <div className="my-1 h-px bg-[#E5E7EB]" />
+                    {STATUS_OPTIONS.map((s) => (
+                      <button key={s} type="button" onClick={() => toggleStatus(s)} className={`flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-xs transition hover:bg-[#F7F7F8] ${statusSel.includes(s) ? 'font-medium text-blue-700' : 'text-[#374151]'}`}>
+                        {s}
+                        {statusSel.includes(s) && <Check size={14} className="text-blue-600" />}
+                      </button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
               <button onClick={exportCSV} className="flex h-11 items-center gap-2 rounded-xl bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500"><Download size={16} />Excel (CSV)</button>
               <button onClick={exportPDF} className="flex h-11 items-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm font-medium text-[#374151] hover:bg-[#F7F7F8]"><Download size={16} />PDF</button>
             </div>
