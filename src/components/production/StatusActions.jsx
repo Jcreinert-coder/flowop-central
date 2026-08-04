@@ -71,31 +71,63 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
     if (item.status === 'Aguardando Emissão da OP') {
       if (!op || !lote) { setShowOp(true); return; }
 
+      const emissionDate = new Date().toISOString().slice(0, 10);
+      const basePatch = {
+        op_emission_date: emissionDate,
+        supply_responsible: user?.full_name,
+        supply_user_id: user?.id,
+      };
+
       if (multi) {
-        const list = preview.length ? preview : generate(op, lote, Number(item.op_count) || 1);
-        const history = markMilestone(item.history, 'OP emitida', user, `${list.length} OPs geradas`);
-        const resumo = list.map((e) => `OP ${e.op_number} — Lote ${e.lot_number}`).join('\n');
-        const emissionDate = new Date().toISOString().slice(0, 10);
-        return save({
-          status: 'OP Emitida',
-          op_number: list[0].op_number,
-          lot_number: list[0].lot_number,
-          op_entries: list,
-          op_emission_date: emissionDate,
-          supply_responsible: user?.full_name,
-          supply_user_id: user?.id,
-          history,
-        }, `Cadastro de ${list.length} OPs realizado\n${resumo}`);
+        setBusy(true);
+        try {
+          const list = preview.length ? preview : generate(op, lote, Number(item.op_count) || 1);
+          const resumo = list.map((e) => `OP ${e.op_number} — Lote ${e.lot_number}`).join('\n');
+
+          // Primeira OP: atualiza o registro existente
+          const firstHistory = markMilestone(item.history, 'OP emitida', user, `OP: ${list[0].op_number} · Lote: ${list[0].lot_number}`);
+          const firstUpdated = await base44.entities.ProductionRequest.update(item.id, {
+            ...basePatch,
+            status: 'OP Emitida',
+            op_number: list[0].op_number,
+            lot_number: list[0].lot_number,
+            op_count: 1,
+            op_entries: [],
+            history: firstHistory,
+          });
+
+          // Demais OPs: cria registros independentes (mesma solicitação, mesma OP emitida)
+          const sharedFields = ['request_number', 'technician_name', 'tech_user_id', 'area', 'etapa', 'product', 'product_code', 'quantity', 'unit', 'reason', 'priority', 'observations', 'supply_notes', 'request_date', 'request_time', 'signature'];
+          const children = list.slice(1).map((e) => {
+            const childHistory = markMilestone(item.history, 'OP emitida', user, `OP: ${e.op_number} · Lote: ${e.lot_number}`);
+            const child = {
+              ...basePatch,
+              status: 'OP Emitida',
+              op_number: e.op_number,
+              lot_number: e.lot_number,
+              op_count: 1,
+              op_entries: [],
+              history: childHistory,
+            };
+            sharedFields.forEach((f) => { if (item[f] != null) child[f] = item[f]; });
+            return child;
+          });
+          if (children.length) {
+            await base44.entities.ProductionRequest.bulkCreate(children);
+          }
+
+          await logAudit({ user, action: `Cadastro de ${list.length} OPs realizado`, entityId: item.id, requestNumber: item.request_number, details: resumo });
+          onUpdate(firstUpdated);
+        } finally { setBusy(false); setShowOp(false); }
+        return;
       }
 
       const history = markMilestone(item.history, 'OP emitida', user, `OP: ${op} · Lote: ${lote}`);
       return save({
+        ...basePatch,
         status: 'OP Emitida',
         op_number: op,
         lot_number: lote,
-        op_emission_date: new Date().toISOString().slice(0, 10),
-        supply_responsible: user?.full_name,
-        supply_user_id: user?.id,
         history,
       }, `OP emitida: ${op} · Lote: ${lote}`);
     }

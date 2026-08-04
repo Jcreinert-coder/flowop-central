@@ -59,8 +59,7 @@ export default function Reports() {
   const filtered = useMemo(() => {
     const t = q.trim().toLowerCase();
     return byPeriod.filter((r) => {
-      const opEntries = (r.op_entries || []).flatMap((e) => [e.op_number, e.lot_number]).filter(Boolean);
-      const matchQ = !t || [r.request_number, r.op_number, r.lot_number, r.product, r.product_code, ...opEntries]
+      const matchQ = !t || [r.request_number, r.op_number, r.lot_number, r.product, r.product_code]
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(t));
       const matchStatus = statusSel.length === 0 || statusSel.includes(r.status);
@@ -149,7 +148,7 @@ export default function Reports() {
                   {filtered.map((r, i) => (
                     <tr key={r.id} className={`border-b border-[#E5E7EB] text-[#374151] transition hover:bg-[#F7F7F8] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
                       <td className="px-4 py-3 font-mono text-[#1F2937] whitespace-nowrap">{r.request_number}</td>
-                      <td className="px-4 font-mono whitespace-nowrap">{r.op_number || '—'}{(r.op_entries?.length || 0) > 1 ? <span className="ml-1 text-[10px] text-blue-600">+{(r.op_entries.length - 1)}</span> : ''}</td>
+                      <td className="px-4 font-mono whitespace-nowrap">{r.op_number || '—'}</td>
                       <td className="px-4 font-mono whitespace-nowrap">{r.lot_number || '—'}</td>
                       <td className="px-4 text-[#1F2937]">{r.product}</td>
                       <td className="px-4 whitespace-nowrap">{r.etapa || '—'}</td>

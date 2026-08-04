@@ -36,7 +36,7 @@ export const STATUS_LABELS = {
   'Planejada': 'Enviar para Emissão',
   'Aguardando Emissão da OP': 'Emitir OP',
   'OP Emitida': 'Iniciar Produção',
-  'Entregue': 'Apontar Produção',
+  'Entregue': 'Receber OP',
   'Recebida': 'Finalizar',
 };
 

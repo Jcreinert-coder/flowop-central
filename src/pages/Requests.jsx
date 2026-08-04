@@ -38,8 +38,7 @@ export default function Requests() {
   const filtered = useMemo(() => {
     const t = q.trim().toLowerCase();
     return scoped.filter((r) => {
-      const opEntries = (r.op_entries || []).flatMap((e) => [e.op_number, e.lot_number]).filter(Boolean);
-      const matchQ = !t || [r.request_number, r.op_number, r.lot_number, r.product, r.product_code, r.technician_name, r.area, r.status, r.request_date, ...opEntries].filter(Boolean).some((v) => String(v).toLowerCase().includes(t));
+      const matchQ = !t || [r.request_number, r.op_number, r.lot_number, r.product, r.product_code, r.technician_name, r.area, r.status, r.request_date].filter(Boolean).some((v) => String(v).toLowerCase().includes(t));
       const matchS = !status || r.status === status;
       return matchQ && matchS;
     });
