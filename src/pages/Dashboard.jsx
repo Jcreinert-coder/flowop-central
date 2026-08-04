@@ -33,7 +33,7 @@ export default function Dashboard() {
   const produzido = scoped.reduce((s, r) => s + (Number(r.produced_quantity) || 0), 0);
 
   const opEmitidas = scoped.filter((r) => r.op_number);
-  const apontadas = scoped.filter((r) => r.status === 'Apontada' || r.status === 'Finalizada');
+  const apontadas = scoped.filter((r) => r.status === 'Recebida' || r.status === 'Apontada');
 
   const stats = [
     { label: 'Total de Solicitações', value: total, Icon: Package, color: '#3b82f6' },

@@ -28,6 +28,7 @@ export default function NewRequest() {
     product_code: '',
     quantity: '',
     unit: 'kg',
+    op_count: 1,
     reason: '',
     priority: 'Normal',
     observations: '',
@@ -45,6 +46,7 @@ export default function NewRequest() {
     const item = await base44.entities.ProductionRequest.create({
       ...form,
       quantity: Number(form.quantity),
+      op_count: Number(form.op_count) || 1,
       tech_user_id: user?.id,
       request_number,
       status: 'Planejada',
@@ -58,7 +60,7 @@ export default function NewRequest() {
         user: i <= 1 ? name : undefined,
       })),
     });
-    await logAudit({ user, action: 'Solicitação criada', entityId: item.id, requestNumber: request_number, details: `${form.product} · ${form.quantity} ${form.unit} · ${form.area} · ${form.etapa}` });
+    await logAudit({ user, action: 'Solicitação criada', entityId: item.id, requestNumber: request_number, details: `${form.product} · ${form.quantity} ${form.unit} · ${form.area} · ${form.etapa} · ${Number(form.op_count) || 1} OP(s)` });
     nav(`/solicitacoes/${item.id}`);
   };
 
@@ -123,6 +125,10 @@ export default function NewRequest() {
                 <select value={form.unit} onChange={(e) => set('unit', e.target.value)} className="form-input">
                   {unitOptions.map((u) => <option key={u}>{u}</option>)}
                 </select>
+              </label>
+              <label>
+                <span className="form-label">Quantidade de OPs *</span>
+                <input required type="number" min="1" value={form.op_count} onChange={(e) => set('op_count', e.target.value)} className="form-input" />
               </label>
               <label>
                 <span className="form-label">Prioridade</span>

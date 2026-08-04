@@ -9,10 +9,10 @@ export default function KPIGrid({ rows, profile, area }) {
   const scoped = profile === 'tecnico' ? rows.filter((r) => r.area === area) : rows;
   const hoje = scoped.filter((r) => (r.request_date || today()) === today());
   const ops = scoped.filter((r) => r.op_number);
-  const pendentes = scoped.filter((r) => !['Finalizada', 'Cancelada'].includes(r.status));
-  const urgentes = scoped.filter((r) => r.priority === 'Urgente' && !['Finalizada', 'Cancelada'].includes(r.status));
+  const pendentes = scoped.filter((r) => !['Apontada', 'Cancelada'].includes(r.status));
+  const urgentes = scoped.filter((r) => r.priority === 'Urgente' && !['Apontada', 'Cancelada'].includes(r.status));
   const qtdTotal = scoped.reduce((s, r) => s + (Number(r.quantity) || 0), 0);
-  const concluidas = scoped.filter((r) => r.status === 'Finalizada');
+  const concluidas = scoped.filter((r) => r.status === 'Apontada');
 
   const porEtapa = ETAPAS.map((e) => ({ etapa: e, count: scoped.filter((r) => r.etapa === e).length }));
 

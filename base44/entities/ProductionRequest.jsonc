@@ -17,6 +17,26 @@
       "format": "date",
       "description": "Data de emiss\u00e3o da OP"
     },
+    "op_count": {
+      "type": "number",
+      "description": "Quantidade de OPs solicitadas para esta solicita\u00e7\u00e3o",
+      "default": 1
+    },
+    "op_entries": {
+      "type": "array",
+      "description": "OPs geradas automaticamente em sequ\u00eancia (quando op_count > 1)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "op_number": {
+            "type": "string"
+          },
+          "lot_number": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "technician_name": {
       "type": "string"
     },
@@ -93,9 +113,9 @@
         "Planejada",
         "Aguardando Emiss\u00e3o da OP",
         "OP Emitida",
-        "Em Produ\u00e7\u00e3o",
+        "Entregue",
+        "Recebida",
         "Apontada",
-        "Finalizada",
         "Cancelada"
       ],
       "default": "Planejada"

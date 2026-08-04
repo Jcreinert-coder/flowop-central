@@ -46,6 +46,7 @@ export default function RequestDetail() {
     ['Prioridade', item.priority],
     ['Status', item.status],
     ['Responsável Supply', item.supply_responsible || '—'],
+    ['Quantidade de OPs', Number(item.op_count) || 1],
   ];
   const done = item.history?.filter((x) => x.completed).length || 0;
 
@@ -125,6 +126,36 @@ export default function RequestDetail() {
                 <div className="rounded-xl bg-[#F7F7F8] p-4">
                   <small className="text-[#9CA3AF]">Hora da Produção</small>
                   <p className="mt-1 text-sm font-medium text-[#1F2937]">{item.production_time || '—'}</p>
+                </div>
+              </div>
+            )}
+
+            {item.op_entries?.length > 1 && (
+              <div className="mt-5">
+                <h2 className="section-title">Ordens de Produção geradas · {item.op_entries.length}</h2>
+                <div className="mt-3 overflow-hidden rounded-xl border border-[#E5E7EB]">
+                  <div className="max-h-72 overflow-auto">
+                    <table className="w-full min-w-[480px] text-left text-xs">
+                      <thead className="sticky top-0 z-10 bg-[#F7F7F8] text-[#6B7280] shadow-[0_1px_0_#E5E7EB]">
+                        <tr className="border-b border-[#E5E7EB]">{['#', 'Número da OP', 'Número do Lote', 'Produto', 'Etapa', 'Quantidade', 'Unidade', 'Área', 'Emissão'].map((h) => <th key={h} className="px-4 py-3 font-medium whitespace-nowrap">{h}</th>)}</tr>
+                      </thead>
+                      <tbody>
+                        {item.op_entries.map((e, i) => (
+                          <tr key={i} className={`border-b border-[#E5E7EB] text-[#374151] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
+                            <td className="px-4 py-2.5 text-[#9CA3AF]">{i + 1}</td>
+                            <td className="px-4 py-2.5 font-mono text-[#1F2937] whitespace-nowrap">{e.op_number}</td>
+                            <td className="px-4 py-2.5 font-mono whitespace-nowrap">{e.lot_number}</td>
+                            <td className="px-4 py-2.5 text-[#1F2937]">{item.product}</td>
+                            <td className="px-4 py-2.5 whitespace-nowrap">{item.etapa || '—'}</td>
+                            <td className="px-4 py-2.5 whitespace-nowrap">{Number(item.quantity).toLocaleString('pt-BR')}</td>
+                            <td className="px-4 py-2.5 whitespace-nowrap">{item.unit}</td>
+                            <td className="px-4 py-2.5 whitespace-nowrap">{item.area}</td>
+                            <td className="px-4 py-2.5 whitespace-nowrap">{item.op_emission_date ? new Date(item.op_emission_date + 'T00:00').toLocaleDateString('pt-BR') : '—'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             )}
