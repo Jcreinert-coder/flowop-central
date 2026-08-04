@@ -35,7 +35,7 @@ export const STATUS_ALL = [...STATUS_FLOW, 'Cancelada'];
 export const STATUS_LABELS = {
   'Planejada': 'Enviar para Emissão',
   'Aguardando Emissão da OP': 'Emitir OP',
-  'OP Emitida': 'Iniciar Produção',
+  'OP Emitida': 'Entregue',
   'Entregue': 'Atualizar para Recebida',
   'Recebida': 'Finalizar',
 };
