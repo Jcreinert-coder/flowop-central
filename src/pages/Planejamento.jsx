@@ -81,11 +81,10 @@ export default function Planejamento() {
           request_time,
           op_count: it.op_count || 1,
           history: [
-            { label: 'Solicitação criada', date: now.toISOString(), completed: true, user: name },
             { label: 'Planejada', date: now.toISOString(), completed: true, user: name },
-            { label: 'OP emitida', completed: false },
+            { label: 'OP Emitida', completed: false },
             { label: 'Entregue', completed: false },
-            { label: 'Produção apontada', completed: false },
+            { label: 'Recebida', completed: false },
             { label: 'Apontada', completed: false },
           ],
         }))

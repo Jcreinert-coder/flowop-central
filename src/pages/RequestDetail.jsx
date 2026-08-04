@@ -48,7 +48,7 @@ export default function RequestDetail() {
     ['Responsável Supply', item.supply_responsible || '—'],
     ['Quantidade de OPs', Number(item.op_count) || 1],
   ];
-  const done = item.history?.filter((x) => x.completed).length || 0;
+  const isDone = (label) => (item.history || []).some((h) => h.label === label && h.completed);
 
   const addNote = async () => {
     if (!note.trim()) return;
@@ -187,14 +187,14 @@ export default function RequestDetail() {
             )}
 
             <h2 className="section-title mt-8">Histórico completo</h2>
-            <div className="mt-5 grid gap-4 md:grid-cols-6">
-              {timeline.map((t, i) => (
+            <div className="mt-5 grid gap-4 md:grid-cols-5">
+              {timeline.map((t) => (
                 <div key={t}>
-                  <span className={`grid h-9 w-9 place-items-center rounded-full ${i < done ? 'bg-blue-600 text-white' : 'bg-[#F0F0F1] text-[#9CA3AF]'}`}>
-                    {i < done ? <Check size={16} /> : <Clock3 size={15} />}
+                  <span className={`grid h-9 w-9 place-items-center rounded-full ${isDone(t) ? 'bg-blue-600 text-white' : 'bg-[#F0F0F1] text-[#9CA3AF]'}`}>
+                    {isDone(t) ? <Check size={16} /> : <Clock3 size={15} />}
                   </span>
                   <p className="mt-3 text-xs text-[#374151]">{t}</p>
-                  <small className="text-[10px] text-[#9CA3AF]">{i < done ? 'Concluído' : 'Pendente'}</small>
+                  <small className="text-[10px] text-[#9CA3AF]">{isDone(t) ? 'Concluído' : 'Pendente'}</small>
                 </div>
               ))}
             </div>

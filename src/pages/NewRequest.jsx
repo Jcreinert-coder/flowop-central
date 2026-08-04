@@ -55,9 +55,9 @@ export default function NewRequest() {
       signature: sig,
       history: MILESTONES.map((label, i) => ({
         label,
-        completed: i <= 1,
-        date: i <= 1 ? now.toISOString() : undefined,
-        user: i <= 1 ? name : undefined,
+        completed: i <= 0,
+        date: i <= 0 ? now.toISOString() : undefined,
+        user: i <= 0 ? name : undefined,
       })),
     });
     await logAudit({ user, action: 'Solicitação criada', entityId: item.id, requestNumber: request_number, details: `${form.product} · ${form.quantity} ${form.unit} · ${form.area} · ${form.etapa} · ${Number(form.op_count) || 1} OP(s)` });

@@ -36,7 +36,7 @@ export const STATUS_LABELS = {
   'Planejada': 'Enviar para Emissão',
   'Aguardando Emissão da OP': 'Emitir OP',
   'OP Emitida': 'Iniciar Produção',
-  'Entregue': 'Receber OP',
+  'Entregue': 'Atualizar para Recebida',
   'Recebida': 'Finalizar',
 };
 
@@ -50,13 +50,13 @@ export const STATUS_COLORS = {
   'Cancelada': 'bg-rose-100 text-rose-700',
 };
 
-export const MILESTONES = ['Solicitação criada', 'Planejada', 'OP emitida', 'Entregue', 'Produção apontada', 'Apontada'];
+export const MILESTONES = ['Planejada', 'OP Emitida', 'Entregue', 'Recebida', 'Apontada'];
 
 export const STATUS_TO_MILESTONE = {
   'Planejada': 'Planejada',
-  'OP Emitida': 'OP emitida',
+  'OP Emitida': 'OP Emitida',
   'Entregue': 'Entregue',
-  'Recebida': 'Produção apontada',
+  'Recebida': 'Recebida',
   'Apontada': 'Apontada',
 };
 

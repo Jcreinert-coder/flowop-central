@@ -85,7 +85,7 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
           const resumo = list.map((e) => `OP ${e.op_number} — Lote ${e.lot_number}`).join('\n');
 
           // Primeira OP: atualiza o registro existente
-          const firstHistory = markMilestone(item.history, 'OP emitida', user, `OP: ${list[0].op_number} · Lote: ${list[0].lot_number}`);
+          const firstHistory = markMilestone(item.history, 'OP Emitida', user, `OP: ${list[0].op_number} · Lote: ${list[0].lot_number}`);
           const firstUpdated = await base44.entities.ProductionRequest.update(item.id, {
             ...basePatch,
             status: 'OP Emitida',
@@ -99,7 +99,7 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
           // Demais OPs: cria registros independentes (mesma solicitação, mesma OP emitida)
           const sharedFields = ['request_number', 'technician_name', 'tech_user_id', 'area', 'etapa', 'product', 'product_code', 'quantity', 'unit', 'reason', 'priority', 'observations', 'supply_notes', 'request_date', 'request_time', 'signature'];
           const children = list.slice(1).map((e) => {
-            const childHistory = markMilestone(item.history, 'OP emitida', user, `OP: ${e.op_number} · Lote: ${e.lot_number}`);
+            const childHistory = markMilestone(item.history, 'OP Emitida', user, `OP: ${e.op_number} · Lote: ${e.lot_number}`);
             const child = {
               ...basePatch,
               status: 'OP Emitida',
@@ -122,19 +122,20 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
         return;
       }
 
-      const history = markMilestone(item.history, 'OP emitida', user, `OP: ${op} · Lote: ${lote}`);
+      const history = markMilestone(item.history, 'OP Emitida', user, `OP: ${op} · Lote: ${lote}`);
       return save({
         ...basePatch,
         status: 'OP Emitida',
         op_number: op,
         lot_number: lote,
         history,
-      }, `OP emitida: ${op} · Lote: ${lote}`);
+      }, `OP Emitida: ${op} · Lote: ${lote}`);
     }
 
     if (item.status === 'Entregue') {
       setShowApontar(true);
-      return;
+      const history = markMilestone(item.history, 'Recebida', user, 'OP atualizada para Recebida');
+      return save({ status: 'Recebida', history }, 'Status alterado para Recebida');
     }
 
     const milestone = STATUS_TO_MILESTONE[ns];
@@ -144,8 +145,15 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
 
   const confirmApontar = async ({ produced_quantity, production_date, production_time }) => {
     setShowApontar(false);
-    const history = markMilestone(item.history, 'Produção apontada', user, `${produced_quantity.toLocaleString('pt-BR')} ${item.unit}`);
-    save({ status: 'Recebida', produced_quantity, production_date, production_time, history }, `Produção apontada: ${produced_quantity} ${item.unit}`);
+    const now = new Date();
+    const dataFmt = new Date(production_date + 'T00:00').toLocaleDateString('pt-BR');
+    const base = (item.history || []).filter((h) => h.label !== 'Quantidade recebida' && h.label !== 'Produção realizada em');
+    const history = [
+      ...base,
+      { label: 'Quantidade recebida', completed: true, date: now.toISOString(), user: user?.full_name, detail: `${produced_quantity.toLocaleString('pt-BR')} ${item.unit}` },
+      { label: 'Produção realizada em', completed: true, date: now.toISOString(), user: user?.full_name, detail: `${dataFmt} às ${production_time}` },
+    ];
+    save({ produced_quantity, production_date, production_time, history }, `Recebimento registrado: ${produced_quantity} ${item.unit}`);
   };
 
   const cancelar = () => save({ status: 'Cancelada', history: (item.history || []).map((h) => ({ ...h, completed: true })) }, 'Solicitação cancelada');
@@ -251,6 +259,11 @@ export default function StatusActions({ item, user, onUpdate, isDemo }) {
           )}
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            {item.status === 'Recebida' && (
+              <button disabled={busy} onClick={() => setShowApontar(true)} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-cyan-600 font-medium text-white shadow-sm hover:bg-cyan-500 disabled:opacity-60">
+                <ClipboardCheck size={17} />Registrar Recebimento
+              </button>
+            )}
             <button disabled={busy} onClick={advance} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-blue-600 font-medium text-white shadow-sm hover:bg-blue-500 disabled:opacity-60">
               {Icon && <Icon size={17} />}{STATUS_LABELS[item.status] || 'Avançar'}
             </button>
