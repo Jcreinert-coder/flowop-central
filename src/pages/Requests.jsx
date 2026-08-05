@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { ArrowLeft, Search } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowUp, Search } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Sidebar from '@/components/production/Sidebar';
 import QueueTable from '@/components/production/QueueTable';
@@ -9,8 +9,21 @@ import { useRole } from '@/lib/RoleContext';
 import { logAudit } from '@/lib/audit';
 import { STATUS_ALL } from '@/lib/areas';
 import { useAreas } from '@/lib/useAreas';
+import { sortRows } from '@/lib/sort';
 
 const todayStr = () => new Date().toISOString().slice(0, 10);
+
+const SORT_OPTIONS = [
+  { key: 'op_number', label: 'Número da OP' },
+  { key: 'lot_number', label: 'Número do Lote' },
+  { key: 'request_number', label: 'Nº da Solicitação' },
+  { key: 'request_date', label: 'Data da Solicitação' },
+  { key: 'op_emission_date', label: 'Data de Emissão da OP' },
+  { key: 'status', label: 'Status' },
+  { key: 'area', label: 'Área' },
+  { key: 'etapa', label: 'Etapa' },
+  { key: 'product', label: 'Produto' },
+];
 
 export default function Requests() {
   const { user, name, profile, area, canDelete } = useRole();
@@ -19,6 +32,8 @@ export default function Requests() {
   const [status, setStatus] = useState('');
   const [areaFilter, setAreaFilter] = useState('');
   const [target, setTarget] = useState(null);
+  const [sortKey, setSortKey] = useState('');
+  const [sortDir, setSortDir] = useState('asc');
   const { names: areas } = useAreas();
   const [params] = useSearchParams();
   const prefilter = params.get('prefilter');
@@ -62,6 +77,7 @@ export default function Requests() {
   }, [prefilter, prefilterValue]);
 
   const visible = prefilter ? filtered.filter(prefilters || (() => true)) : filtered;
+  const sorted = sortKey ? sortRows(visible, sortKey, sortDir) : visible;
   const prefilterLabel = prefilter ? (() => {
     const labels = { today: 'Hoje', ops: 'OPs Criadas', pendentes: 'Pendentes', urgentes: 'Urgentes', concluidas: 'Concluídas', etapa: prefilterValue, area: prefilterValue, product: prefilterValue, status: prefilterValue };
     return labels[prefilter] || '';
@@ -107,9 +123,18 @@ export default function Requests() {
                 <option value="">Todos os status</option>
                 {STATUS_ALL.map((s) => <option key={s}>{s}</option>)}
               </select>
+              <div className="flex h-11 items-center overflow-hidden rounded-xl border border-[#E5E7EB] bg-white shadow-sm">
+                <select value={sortKey} onChange={(e) => setSortKey(e.target.value)} className="h-11 border-r border-[#E5E7EB] bg-transparent px-3 text-xs text-[#1F2937] outline-none">
+                  <option value="">Ordenar por</option>
+                  {SORT_OPTIONS.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}
+                </select>
+                <button type="button" onClick={() => setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))} disabled={!sortKey} className="grid h-11 w-10 place-items-center text-[#6B7280] hover:bg-[#F7F7F8] disabled:opacity-40">
+                  {sortDir === 'asc' ? <ArrowUp size={15} /> : <ArrowDown size={15} />}
+                </button>
+              </div>
             </div>
           </div>
-          <QueueTable rows={visible} canDelete={canDelete} onDelete={setTarget} />
+          <QueueTable rows={sorted} canDelete={canDelete} onDelete={setTarget} />
         </div>
       </main>
       <DeleteDialog

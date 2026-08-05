@@ -1,13 +1,26 @@
 import { useEffect, useMemo, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { ArrowLeft, Check, ChevronDown, Download, FileText, Filter, Search } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowUp, Check, ChevronDown, Download, FileText, Filter, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Sidebar from '@/components/production/Sidebar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { sortRows } from '@/lib/sort';
 
 const HEADERS = ['Solicitação', 'OP', 'Lote', 'Produto', 'Etapa', 'Área', 'Quantidade', 'Unidade', 'Status', 'Resp. Supply', 'Data Emissão OP'];
 
 const STATUS_OPTIONS = ['Planejada', 'Aguardando Emissão da OP', 'OP Emitida', 'Entregue', 'Recebida', 'Apontada', 'Cancelada'];
+
+const SORT_OPTIONS = [
+  { key: 'request_number', label: 'Nº da Solicitação' },
+  { key: 'op_number', label: 'Número da OP' },
+  { key: 'lot_number', label: 'Número do Lote' },
+  { key: 'product', label: 'Produto' },
+  { key: 'area', label: 'Área' },
+  { key: 'etapa', label: 'Etapa' },
+  { key: 'quantity', label: 'Quantidade' },
+  { key: 'request_date', label: 'Data' },
+  { key: 'status', label: 'Status' },
+];
 
 function toCSV(rows) {
   const lines = [HEADERS.join(';')];
@@ -35,6 +48,8 @@ export default function Reports() {
   const [q, setQ] = useState('');
   const [statusSel, setStatusSel] = useState([]);
   const [statusOpen, setStatusOpen] = useState(false);
+  const [sortKey, setSortKey] = useState('');
+  const [sortDir, setSortDir] = useState('asc');
 
   useEffect(() => {
     base44.entities.ProductionRequest.list('-created_date', 500)
@@ -66,6 +81,8 @@ export default function Reports() {
       return matchQ && matchStatus;
     });
   }, [byPeriod, q, statusSel]);
+
+  const sorted = useMemo(() => sortKey ? sortRows(filtered, sortKey, sortDir) : filtered, [filtered, sortKey, sortDir]);
 
   const toggleStatus = (s) =>
     setStatusSel((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
@@ -134,6 +151,15 @@ export default function Reports() {
                   </div>
                 </PopoverContent>
               </Popover>
+              <div className="flex h-11 items-center overflow-hidden rounded-xl border border-[#E5E7EB] bg-white shadow-sm">
+                <select value={sortKey} onChange={(e) => setSortKey(e.target.value)} className="h-11 border-r border-[#E5E7EB] bg-transparent px-3 text-xs text-[#1F2937] outline-none">
+                  <option value="">Ordenar por</option>
+                  {SORT_OPTIONS.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}
+                </select>
+                <button type="button" onClick={() => setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))} disabled={!sortKey} className="grid h-11 w-10 place-items-center text-[#6B7280] hover:bg-[#F7F7F8] disabled:opacity-40">
+                  {sortDir === 'asc' ? <ArrowUp size={15} /> : <ArrowDown size={15} />}
+                </button>
+              </div>
               <button onClick={exportCSV} className="flex h-11 items-center gap-2 rounded-xl bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-500"><Download size={16} />Excel (CSV)</button>
               <button onClick={exportPDF} className="flex h-11 items-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm font-medium text-[#374151] hover:bg-[#F7F7F8]"><Download size={16} />PDF</button>
             </div>
@@ -145,7 +171,7 @@ export default function Reports() {
                   <tr className="border-b border-[#E5E7EB]">{HEADERS.map((h) => <th key={h} className="px-4 py-3 font-medium whitespace-nowrap">{h}</th>)}</tr>
                 </thead>
                 <tbody>
-                  {filtered.map((r, i) => (
+                  {sorted.map((r, i) => (
                     <tr key={r.id} className={`border-b border-[#E5E7EB] text-[#374151] transition hover:bg-[#F7F7F8] ${i % 2 === 1 ? 'bg-[#FAFAFB]' : ''}`}>
                       <td className="px-4 py-3 font-mono text-[#1F2937] whitespace-nowrap">{r.request_number}</td>
                       <td className="px-4 font-mono whitespace-nowrap">{r.op_number || '—'}</td>
