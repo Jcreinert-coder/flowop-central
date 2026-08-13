@@ -28,5 +28,11 @@ export function useProducts() {
     return map;
   }, [products]);
 
-  return { productsByEtapa, products, loading, reload: load };
+  const byName = useMemo(() => {
+    const map = {};
+    products.forEach((p) => { map[p.name] = p; });
+    return map;
+  }, [products]);
+
+  return { productsByEtapa, products, byName, loading, reload: load };
 }

@@ -15,7 +15,7 @@ import { useUnits } from '@/lib/useUnits';
 export default function NewRequest() {
   const nav = useNavigate();
   const { user, name, area, profile } = useRole();
-  const { productsByEtapa } = useProducts();
+  const { productsByEtapa, byName } = useProducts();
   const { names: areas } = useAreas();
   const { names: unitOptions } = useUnits();
   const [busy, setBusy] = useState(false);
@@ -107,14 +107,14 @@ export default function NewRequest() {
                 <ProductSelect
                   products={form.etapa ? productsByEtapa[form.etapa] || [] : []}
                   value={form.product}
-                  onChange={(p) => set('product', p)}
+                  onChange={(p) => setForm({ ...form, product: p, product_code: byName[p]?.code || '' })}
                   disabled={!form.etapa}
                   placeholder={form.etapa ? 'Selecione...' : 'Selecione a etapa primeiro'}
                 />
               </label>
               <label>
-                <span className="form-label">Código do Produto (opcional)</span>
-                <input value={form.product_code} onChange={(e) => set('product_code', e.target.value)} className="form-input" />
+                <span className="form-label">Código do Produto</span>
+                <input readOnly value={form.product_code} placeholder="Preenchido automaticamente" className="form-input opacity-70" />
               </label>
               <label>
                 <span className="form-label">Quantidade *</span>
