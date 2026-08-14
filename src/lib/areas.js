@@ -22,11 +22,12 @@ export const PROFILES = [
   { value: 'tecnico', label: 'Técnico' },
   { value: 'supply', label: 'Supply' },
   { value: 'lider', label: 'Líder' },
+  { value: 'geral', label: 'Geral' },
 ];
 
 export const profileLabel = (p) => PROFILES.find((x) => x.value === p)?.label || p;
 
-export const roleForInvite = (profile) => (profile === 'tecnico' ? 'user' : 'admin');
+export const roleForInvite = (profile) => (profile === 'supply' || profile === 'lider' ? 'admin' : 'user');
 
 export const STATUS_FLOW = ['Planejada', 'Aguardando Emissão da OP', 'OP Emitida', 'Entregue', 'Recebida', 'Apontada'];
 

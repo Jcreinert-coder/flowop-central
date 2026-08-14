@@ -20,6 +20,8 @@ import Reports from '@/pages/Reports';
 import Users from '@/pages/Users';
 import Settings from '@/pages/Settings';
 import Planejamento from '@/pages/Planejamento';
+import Onboarding from '@/pages/Onboarding';
+import MyProfile from '@/pages/MyProfile';
 import { RoleProvider } from '@/lib/RoleContext';
 
 const AuthenticatedApp = () => {
@@ -63,6 +65,8 @@ const AuthenticatedApp = () => {
           <Route path="/usuarios" element={<Users />} />
           <Route path="/planejamento" element={<Planejamento />} />
           <Route path="/configuracoes" element={<Settings />} />
+          <Route path="/bem-vindo" element={<Onboarding />} />
+          <Route path="/meu-perfil" element={<MyProfile />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

@@ -15,7 +15,8 @@
       "enum": [
         "tecnico",
         "supply",
-        "lider"
+        "lider",
+        "geral"
       ],
       "description": "Perfil funcional no CSOP"
     },

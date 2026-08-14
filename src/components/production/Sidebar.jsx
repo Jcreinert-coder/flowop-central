@@ -1,11 +1,15 @@
-import { CalendarDays, ClipboardList, Factory, FileText, LayoutDashboard, PlusCircle, ScrollText, Settings, UsersRound } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { CalendarDays, ClipboardList, Factory, FileText, LayoutDashboard, LogOut, PlusCircle, Repeat, ScrollText, Settings, UserRound, UsersRound } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { base44 } from '@/api/base44Client';
 import { useRole } from '@/lib/RoleContext';
 import { profileLabel } from '@/lib/areas';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export default function Sidebar() {
   const { pathname } = useLocation();
   const { profile, area, cargo, name, isAdmin } = useRole();
+  const navigate = useNavigate();
+  const handleLogout = () => base44.auth.logout();
 
   const items = [
     ['Dashboard', LayoutDashboard, '/'],
@@ -41,15 +45,23 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="mt-4 rounded-xl border border-[#E5E7EB] bg-[#F7F7F8] p-3">
-        <div className="flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-100 text-sm font-semibold text-blue-700">{initials}</span>
-          <span className="min-w-0 flex-1">
-            <b className="block truncate text-sm text-[#1F2937]">{name}</b>
-            <small className="text-xs text-[#9CA3AF]">{roleLabel}{cargo ? ` · ${cargo}` : ''}</small>
-          </span>
-        </div>
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="mt-4 flex w-full items-center gap-3 rounded-xl border border-[#E5E7EB] bg-[#F7F7F8] p-3 text-left transition hover:bg-[#F0F0F2]">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-100 text-sm font-semibold text-blue-700">{initials}</span>
+            <span className="min-w-0 flex-1">
+              <b className="block truncate text-sm text-[#1F2937]">{name}</b>
+              <small className="text-xs text-[#9CA3AF]">{roleLabel}{cargo ? ` · ${cargo}` : ''}</small>
+            </span>
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="top" align="start" className="w-52">
+          <DropdownMenuItem onClick={() => navigate('/meu-perfil')}><UserRound size={15} />Meu perfil</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}><Repeat size={15} />Trocar usuário</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleLogout} className="text-rose-600 focus:text-rose-600"><LogOut size={15} />Sair</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </aside>
   );
 }
