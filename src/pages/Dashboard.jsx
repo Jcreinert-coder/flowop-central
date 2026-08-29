@@ -5,6 +5,7 @@ import Topbar from '@/components/production/Topbar';
 import KPIGrid from '@/components/production/KPIGrid';
 import ChartsGrid from '@/components/production/ChartsGrid';
 import QueueTable from '@/components/production/QueueTable';
+import ProgressCard from '@/components/production/ProgressCard';
 import { useRole } from '@/lib/RoleContext';
 import { Package, Hash, Clock, Timer } from 'lucide-react';
 
@@ -64,6 +65,7 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
+          <ProgressCard rows={rows} profile={profile} area={area} />
           <ChartsGrid rows={rows} profile={profile} area={area} />
           <QueueTable rows={recent} compact />
         </div>
