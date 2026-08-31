@@ -89,18 +89,8 @@ export default function Reports() {
 
   const exportCSV = () => download(`relatorio-csop-${periodo}.csv`, toCSV(filtered), 'text/csv;charset=utf-8;');
   const exportPDF = () => {
-    import('jspdf').then(({ jsPDF }) => {
-      const doc = new jsPDF({ orientation: 'landscape' });
-      doc.setFontSize(16); doc.text('Relatório CSOP - Solicitações de OP', 14, 16);
-      doc.setFontSize(10); doc.text(`Período: ${periodo} · Gerado em ${new Date().toLocaleString('pt-BR')}`, 14, 24);
-      let y = 32;
-      doc.text(HEADERS.join(' | '), 14, y); y += 6;
-      filtered.slice(0, 40).forEach((r) => {
-        doc.text([r.request_number, r.op_number, r.lot_number, r.product, r.etapa, r.area, r.quantity + r.unit, r.status, r.supply_responsible, r.op_emission_date].join(' | '), 14, y);
-        y += 5;
-        if (y > 200) { doc.addPage(); y = 20; }
-      });
-      doc.save(`relatorio-csop-${periodo}.pdf`);
+    import('@/lib/pdfReport').then(({ generatePdfReport }) => {
+      generatePdfReport({ rows: filtered, periodo });
     });
   };
 
